@@ -47,9 +47,7 @@ int main(int argc, char** argv)
   double time = WallTime();
   Vector vec = genVec(N);
   double sum = doSum(vec);
-
   printDiff(N);
-
   printf("sum: %f\n", sum);
   printf("elapsed: %f\n", WallTime()-time);
 
