@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <math.h>
 #include "common.h"
 
-
+#define M_PI 3.14159265358979323846
 
 // calculates \sum_K v_i'*A*v_i
 Vector genVec(int n)
@@ -23,7 +23,18 @@ double doSum(Vector vec){
   {
       sum += vec->data[i];
   }
+  freeVector(vec);
   return sum;
+}
+
+void printDiff(int n){
+  double Sn=(M_PI*M_PI)/6;
+  double sum=0;
+  for (int i = 4; i < 15; ++i)
+  {
+    sum = doSum(genVec(pow(2, i)));
+    printf("Diff n=%f: %f\n",pow(2, i), sum-Sn);
+  }
 }
 
 int main(int argc, char** argv)
@@ -37,9 +48,10 @@ int main(int argc, char** argv)
   Vector vec = genVec(N);
   double sum = doSum(vec);
 
+  printDiff(N);
+
   printf("sum: %f\n", sum);
   printf("elapsed: %f\n", WallTime()-time);
 
-  freeVector(vec);
   return 0;
 }
