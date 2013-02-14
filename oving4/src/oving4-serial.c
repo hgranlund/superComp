@@ -11,8 +11,7 @@ Vector genVec(int n)
     Vector vec = createVector(n);
     for (int i = 0; i < n; ++i)
     {
-      vec->data[i]=1/((i+1)*(i+1));
-      printf("i %d\n",i);
+      vec->data[i]=1./((i+1)*(i+1));
     }
     return vec;
 }
@@ -22,8 +21,7 @@ double doSum(Vector vec){
 
   for (int i = 0; i < vec->len; ++i)
   {
-      sum = sum +vec->data[i];
-      printf("sum ++ %d\n", sum);
+      sum += vec->data[i];
   }
   return sum;
 }
@@ -31,13 +29,9 @@ double doSum(Vector vec){
 int main(int argc, char** argv)
 {
   if (argc < 2) {
-    printf("need one parameters, length of vector\n");
     return 1;
   }
   int N=atoi(argv[1]);
-
-
-
 
   double time = WallTime();
   Vector vec = genVec(N);
@@ -46,6 +40,6 @@ int main(int argc, char** argv)
   printf("sum: %f\n", sum);
   printf("elapsed: %f\n", WallTime()-time);
 
-  freeMatrix(vec);
+  freeVector(vec);
   return 0;
 }
