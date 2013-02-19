@@ -27,7 +27,7 @@ double doSum(Vector vec){
   return sum;
 }
 
-void printDiff(int n){
+void printDiff(){
   double Sn=(M_PI*M_PI)/6;
   double sum=0;
   for (int i = 4; i < 15; ++i)
@@ -39,17 +39,8 @@ void printDiff(int n){
 
 int main(int argc, char** argv)
 {
-  if (argc < 2) {
-    return 1;
-  }
-  int N=atoi(argv[1]);
-
   double time = WallTime();
-  // Vector vec = genVector(N);
-  // double sum = doSum(vec);
-  // // printf("sum: %f\n", sum);
-  printDiff(N);
+  printDiff();
   printf("elapsed: %f\n", WallTime()-time);
-
   return 0;
 }
