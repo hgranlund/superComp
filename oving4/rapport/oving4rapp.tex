@@ -210,7 +210,8 @@
     \\ \\ 
     The parallell verison of the program should be suitable for shared memory computers. This favors the use of OpenMP as this library takes advantage of the shared memory. The difference from the serial version is the doSum method. We have added a pragma to the for loop, and peform an reduction on the sum variable. The schedule mode was set to static due to the similar workload of every loop. 
     \lstinputlisting[language=C, firstline=22, lastline=31, caption=OpenMP version]{../src/oving4-openmp.c}
-
+    \
+    There is also expected of us to create a program suitable for distrubuted memory systems. This smells of MPI. Our MPI-program splits the vector according to the number of processes. Each process then calculate it's part of the sum. An \textit{MPI\_Reduce} call then gathers all the parts, and sums them to the final sum. The final sum ends up on the root process which we chose to be the one with rank 0.
 
 
 
