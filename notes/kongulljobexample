@@ -1,0 +1,15 @@
+#!/bin/bash
+
+#PBS -N firstjob
+#PBS -lnodes=4:ppn=12:default
+#PBS -lwalltime=00:01:00
+#PBS -lpmem=2000MB>
+#PBS -A freecycle
+#PBS -q express
+#PBS -j oe
+
+cd $PBS_O_WORKDIR
+module load intelcomp
+module load openmpi/1.4.3-intel
+KMP_AFFINITY="granularity=fine ,compact"
+OMP_NUM_THREADS=3 mpirun -npernode 4 theJOB PARMS
