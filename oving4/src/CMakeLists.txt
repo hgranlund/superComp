@@ -18,11 +18,14 @@ ELSE(HAVE_C99)
 ENDIF(HAVE_C99)
 
 OPTION(USE_OPENMP "Use OpenMP?" ON)
-
+OPTION(USE_MPI "Use MPI?" ON)
 # We want OpenMP
 IF(USE_OPENMP)
   FIND_PACKAGE(OpenMP)
 ENDIF(USE_OPENMP)
+IF(USE_MPI)
+  FIND_PACKAGE(MPI)
+ENDIF(USE_MPI)
 IF(CMAKE_COMPILER_IS_GNUCC)
   FIND_PACKAGE(BLAS REQUIRED)
   SET(DEPLIBS ${DEPLIBS} ${BLAS_LIBRARIES})
@@ -35,6 +38,11 @@ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 IF(OPENMP_FOUND)
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DHAVE_OPENMP=1")
 ENDIF(OPENMP_FOUND)
+IF(MPI_FOUND)
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DHAVE_MPI=1")
+  SET(INCLUDES ${INCLUDES} ${MPI_INCLUDE_PATH})
+  SET(DEPLIBS ${DEPLIBS} ${MPI_C_LIBRARIES})
+ENDIF(MPI_FOUND)
 
 # Send the include directories to the compiler
 INCLUDE_DIRECTORIES(${INCLUDES})
@@ -51,6 +59,9 @@ ENDMACRO(ADD_APP)
 
 # Add a program consisting of these sources
 ADD_APP(oving4-serial  oving4-serial.c)
-
+ADD_APP(oving4-serial-blas  oving4-serial-blas.c)
+ADD_APP(oving4-openmp oving4-openmp.c)
+ADD_APP(oving4-openmpi oving4-openmpi.c)
+ADD_APP(oving4-hybrid oving4-hybrid.c)
 
 # Generate convenience script
