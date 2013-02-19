@@ -36,7 +36,7 @@ void printDiff(){
   for (int i = 4; i < 15; ++i)
   {
     sum = doSum(genVector(pow(2, i)));
-    printf("Diff n=%f: %f\n",pow(2, i), sum-Sn);
+    printf("Diff (n=%f) = %f\n",pow(2, i), sum-Sn);
   }
 }
 
