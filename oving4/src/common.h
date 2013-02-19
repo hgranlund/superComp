@@ -41,6 +41,8 @@ typedef matrix_t* Matrix; //!< Convenience type defintion
 //! \returns A vector with the requested length
 Vector createVector(int len);
 
+void splitVector(int globLen, int size, int** len, int** displ);
+
 //! \brief Free up memory allocated to a vector
 void freeVector(Vector vec);
 

@@ -16,6 +16,19 @@ Vector createVector(int len)
   return result;
 }
 
+void splitVector(int globLen, int size, int** len, int** displ)
+{
+  *len = calloc(size,sizeof(int));
+  *displ = calloc(size,sizeof(int));
+  for (int i=0;i<size;++i) {
+    (*len)[i] = globLen/size;
+    if (globLen % size && i >= (size - globLen % size))
+      (*len)[i]++;
+    if (i < size-1)
+      (*displ)[i+1] = (*displ)[i]+(*len)[i];
+  }
+}
+
 void freeVector(Vector vec)
 {
   free(vec->data);
