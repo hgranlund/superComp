@@ -193,7 +193,7 @@
 
 \section{}
 	
-	In this assignment we will write a program in C to compute a sum of vectors. More precisely we will consider a vector $ v \in \mathbb{R}^n $ defined like this:
+	In this assignment we will write a program in C to compute a sum of vectors. More precisely we will consider a vector $ v \in \mathbb{R}^n $ defined:
 
 	$$ v(i) = \frac{1}{i^2}, \ i=1,...,n$$
 
@@ -212,7 +212,7 @@
     \lstinputlisting[language=C, firstline=22, lastline=31, caption=OpenMP version]{../src/oving4-openmp.c}
     \
     There is also expected of us to create a program suitable for distrubuted memory systems. This smells of MPI. Our MPI-program splits the vector according to the number of processes. Each process then calculate it's part of the sum. An \textit{MPI\_Reduce} call then gathers all the parts, and sums them to the final sum. The final sum ends up on the root process which we chose to be the one with rank 0.
-    \lstinputlisting[language=C, firstline=53, lastline=70, caption=MPI version]{../src/oving4-openmpi.c}
+    \lstinputlisting[language=C, firstline=53, lastline=71, caption=MPI version]{../src/oving4-openmpi.c}
     \
     Comparing the results of $ S-S_N $ in our MPI program on 4 processes, 16 processes and the serial version resulted in exactly the same results. However, this it not always the case when using the MPI\_Reduce with the parameter MPI\_SUM. This is becasue this method takes advantage of the associativity nature of sums, and since it can happen that it sums the parts in different order we can get different round-off errors and therefore different results.
 
@@ -222,11 +222,12 @@
 
     $$ F(n) = 3n + \frac{n}{T}T+(T-1) = 4n + T - 1 $$
 
-    Our multi-processor program is well balanced because each process is responsible for creating its own vector elements, and doing calculation on them. And each process takes exactly the same amount of elements, which takes the same amount of time. One process is responsible for collecting the data in the end and therefore the load on this is slightly larger, but negligble.@
+    Our multi-processor program is well balanced because each process is responsible for creating its own vector elements, and doing calculation on them. And each process takes exactly the same amount of elements, which takes the same amount of time. One process is responsible for collecting the data in the end and therefore the load on this is slightly larger, but negligble.
 
     We compared the time it took to compute the difference $ S - S_n $ on the serial version and the OpenMP version. The OpenMP version was slightly faster when $n>8192$, but the total time was $0.000401s$  for the serial version. This is such a small trivial problem that the effort going into parallelize it is not worth it. It takes well under one hundred of a second doing the computations to the precision of the double precision datatype on the serial version. The overhead of splitting up the problem is dominating the computation time of the OpenMP version. In addition we do know the exact value. This makes it only of academic interest to compute an apporoximation.
 
     The source of our code is delivered as seperate files with this report.
+
 
 
 %----------------------------------------------------------------------------------------
