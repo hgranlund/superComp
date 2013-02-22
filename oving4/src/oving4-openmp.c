@@ -11,12 +11,12 @@
 
 Vector genVector(int length)
 {
-    Vector vec = createVector(length);
-    for (int i = 0; i < length; ++i)
-    {
-      vec->data[i]=1./((i+1)*(i+1));
-    }
-    return vec;
+  Vector vec = createVector(length);
+  for (int i = 0; i < length; ++i)
+  {
+    vec->data[i]=1./((i+1)*(i+1));
+  }
+  return vec;
 }
 
 double doSum(Vector vec){
@@ -24,7 +24,7 @@ double doSum(Vector vec){
   #pragma omp parallel for schedule(static) reduction(+:sum)
   for (int i = 0; i < vec->len; ++i)
   {
-      sum += vec->data[i];
+    sum += vec->data[i];
   }
   freeVector(vec);
   return sum;
@@ -35,15 +35,15 @@ void printDiff(){
   double sum=0;
   for (int i = 4; i < 15; ++i)
   {
-    sum = doSum(genVector(pow(2, i)));
-    printf("Diff (n=%f) = %f\n",pow(2, i), sum-Sn);
-  }
+   double time = WallTime();
+   sum = doSum(genVector(pow(2, i)));
+   printf("Diff (n=%f) = %f,",pow(2, i), sum-Sn);
+   printf(" Elapsed: %fs\n", WallTime()-time);
+ }
 }
 
 int main(int argc, char** argv)
 {
-  double time = WallTime();
   printDiff();
-  printf("elapsed: %f\n", WallTime()-time);
   return 0;
 }

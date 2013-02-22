@@ -9,12 +9,12 @@
 Vector genVector(int start, int stop)
 {
   int len = stop-start;
-  double sumIter = 0;
+  int sumIter = start+1;
   Vector vec = createVector(len);
   for (int i = 0; i < len; ++i)
   {
-    sumIter = i+start+1;
     vec->data[i]=1./((sumIter)*(sumIter));
+    sumIter +=1;
   }
   return vec;
 }
@@ -65,13 +65,9 @@ int main(int argc, char** argv)
 
     if (rank == 0)
     {
-      printf("Diff (n=%d) = %f\n",n, sum-Sn);
+      printf("Diff (n=%d) = %f,",n, sum-Sn);
+      printf(" Elapsed: %fs\n", WallTime()-time);
     }
-  }
-
-  if (rank == 0)
-  {
-    printf("elapsed: %f\n", WallTime()-time);
   }
 
   #ifdef HAVE_MPI
