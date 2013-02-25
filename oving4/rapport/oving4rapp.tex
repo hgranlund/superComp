@@ -225,9 +225,9 @@
     Considering the memory requirement our program is pretty smart. All processes need some basic data like number of processes, rank, the correct sum, the part sum and the split vectors. Each process only generates $ N/P $ vector elements, therefore the memory consumption per process decreases with more processes. But of course the total memory consumption increases due to the mentioned overhead variables.
     
     
-    When generating a vector element we use the formula $ v(i) = \frac{1}{i^2}$. Which requires three floating point operations. Generating the vector $v$ takes three floating point operations per number of elements ($n$). To compute the total sum $S_n$ using the OpenMP version (for shared memory computers) we use the same method to generate the vectors, each thread sums $\frac{n}{T}$ elements with one floating operation per sum plus the reduction in the end which takes $T-1$ floating point operations, where $T$ is number of threads.
+    When generating a vector element we use the formula $ v(i) = \frac{1}{i^2}$. Which requires two floating point operations. Generating the vector $v$ takes two floating point operations per number of elements ($n$). To compute the total sum $S_n$ using the OpenMP version (for shared memory computers) we use the same method to generate the vectors, each thread sums $\frac{n}{T}$ elements with one floating operation per sum plus the reduction in the end which takes $T-1$ floating point operations, where $T$ is number of threads.
 
-    $$ F(n) = 3n + \frac{n}{T}T+(T-1) = 4n + T - 1 $$
+    $$ F(n) = 2n + \frac{n}{T}T+(T-1) = 3n + T - 1 $$
     
     
     Our multi-processor program is well balanced because each process is responsible for creating its own vector elements, and doing calculation on them. And each process sums exactly the same amount of elements, which takes the same amount of time. One process is responsible for collecting the data in the end and therefore the load on this is slightly larger, but negligble.
