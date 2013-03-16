@@ -55,10 +55,8 @@
     il = disp[rank];
 
 
-
     diag = createRealArray (m);
-    b    = createReal2DArray (len[rank],m);
-    bt   = createReal2DArray (len[rank],m);
+    b    = createReal2DArray (ml,m);
     z    = createRealArray (nn);
 
 
@@ -67,11 +65,11 @@
 
 
 
-    for (i=0; i < ml; i++) {
+    for (i=0; i < m; i++) {
       diag[i] = 2.*(1.-cos((i+1)*pi/(Real)n));
     }
     for (j=0; j < ml; j++) {
-      for (i=0; i < ml; i++) {
+      for (i=0; i < m; i++) {
         b[j][i] = h*h;
       }
     }
@@ -82,14 +80,13 @@
 
     transpose(b, size, len, disp, rank, m);
 
-
     for (i=0; i < ml; i++) {
       fstinv_(b[i], &n, z, &nn);
     }
 
     for (j=0; j < ml; j++) {
       for (i=0; i < m; i++) {
-        b[j][i] = b[j][i]/(diag[i]+diag[j]);
+        b[j][i] = b[j][i]/(diag[i]+diag[j+il]);
       }
     }
 
@@ -106,42 +103,54 @@
 
 
     umax = 0.0;
-    for (j=0; j < m; j++) {
+    for (j=0; j < ml; j++) {
       for (i=0; i < m; i++) {
         if (b[j][i] > umax) umax = b[j][i];
       }
     }
 
     printf (" umax = %e \n",umax);
+    MPI_Finalize();
+    return 0;
   }
 
   void transpose (Real **b, int size, int *len, int *disp, int rank, int m){
+    int i, *sendcounts, *rdispls;
     Real  *sendbuf, *recvbuf;
     int index = 0;
     sendbuf = createRealArray (m * len[rank]);
     recvbuf = createRealArray (m * len[rank]);
+    sendcounts = calloc(size,sizeof(int));
+    rdispls = calloc(size,sizeof(int));
     for (int i = 0; i < size; ++i)
     {
-      for (int j = 0; j < len[i]; ++j)
+      for (int j = 0; j < len[rank]; ++j)
       {
         for (int k = 0; k < len[i]; ++k)
         {
+
           sendbuf[index] = b[j][disp[i]+k];
           index++;
         }
       }
     }
-
-    MPI_Alltoallv(sendbuf, len, disp, MPI_DOUBLE, recvbuf, len, disp, MPI_DOUBLE, MPI_COMM_WORLD);
-
+    index=0;
+    for (int i = 0; i < size; ++i)
+    {
+      sendcounts[i]= len[rank]*len[i];
+      index=index+sendcounts[i];
+      rdispls[i]=index;
+    }
+    MPI_Alltoallv(sendbuf, sendcounts, rdispls, MPI_DOUBLE, recvbuf, sendcounts, rdispls, MPI_DOUBLE, MPI_COMM_WORLD);
     index = 0;
     for (int i = 0; i < size; ++i)
     {
       for (int j = 0; j < len[i]; ++j)
       {
-        for (int k = 0; k < len[i]; ++k)
+        for (int k = 0; k < len[rank]; ++k)
         {
-          b[disp[i]+k][j]=recvbuf[index];
+
+          b[k][disp[i]+j]=recvbuf[index];
           index++;
         }
       }
@@ -186,9 +195,11 @@
     }
   }
 
+
   void init_app(int argc, char** argv, int* rank, int* size)
   {
     MPI_Init(&argc, &argv);
     MPI_Comm_size(MPI_COMM_WORLD, size);
     MPI_Comm_rank(MPI_COMM_WORLD, rank);
   }
+
