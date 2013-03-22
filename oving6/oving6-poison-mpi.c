@@ -1,13 +1,3 @@
-/*
-  C-program to solve the two-dimensional Poisson equation on
-  a unit square using one-dimensional eigenvalue decompositions
-  and fast sine transforms
-
-  einar m. ronquist
-  ntnu, october 2000
-  revised, october 2001
-*/
-
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -138,8 +128,8 @@
     for (int i = 0; i < size; ++i)
     {
       sendcounts[i]= len[rank]*len[i];
-      index=index+sendcounts[i];
       rdispls[i]=index;
+      index=index+sendcounts[i];
     }
     MPI_Alltoallv(sendbuf, sendcounts, rdispls, MPI_DOUBLE, recvbuf, sendcounts, rdispls, MPI_DOUBLE, MPI_COMM_WORLD);
     index = 0;
