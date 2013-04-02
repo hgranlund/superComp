@@ -15,6 +15,7 @@ int main(int argc, char **argv )
   n  = atoi(argv[1]);
   m  = n-1;
   nn = 4*n;
+  splitVector(m, size, &len, &disp);
   ml = len[rank];
   il = disp[rank];
   diag = createRealArray (m);
@@ -22,7 +23,6 @@ int main(int argc, char **argv )
   z    = createRealArray (nn);
   h    = 1./(Real)n;
   pi   = 4.*atan(1.);
-  splitVector(m, size, &len, &disp);
 
   for (i=0; i < m; i++) {
     diag[i] = 2.*(1.-cos((i+1)*pi/(Real)n));
