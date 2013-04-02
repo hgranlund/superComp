@@ -28,8 +28,8 @@ SET(DEPLIBS ${DEPLIBS} ${MPI_C_LIBRARIES})
 # Send the include directories to the compiler
 INCLUDE_DIRECTORIES(${INCLUDES})
 
-
+ADD_LIBRARY(common common.c)
 ADD_EXECUTABLE(poisson oving6-poison-mpi.c fst.f)
 SET_TARGET_PROPERTIES(poisson PROPERTIES LINKER_LANGUAGE C)
 
-TARGET_LINK_LIBRARIES(poisson ${DEPLIBS})
+TARGET_LINK_LIBRARIES(poisson common ${DEPLIBS})
