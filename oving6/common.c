@@ -10,7 +10,6 @@ void vectorToMatrix(Real **matrix, Real *vector, int *len, int *disp, int size, 
     {
       for (int k = 0; k < len[rank]; ++k)
       {
-
         matrix[k][disp[i]+j]=vector[index];
         index++;
       }
@@ -91,6 +90,24 @@ void splitVector(int globLen, int size, int** len, int** displ)
   }
 }
 
+void gatherMatrix(Real** Matrix, int matrixSize, Real* gatherRecvBuf, int* len, int* disp, int root){
+  int size, rank, *sendcounts, *rdispls, index;
+  Real *gatherSendBuf;
+  MPI_Comm_size(MPI_COMM_WORLD, &size);
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  gatherSendBuf = createRealArray (matrixSize * len[rank]);
+  matrixToVector(Matrix, gatherSendBuf, len, disp, size, rank);
+  sendcounts = calloc(size,sizeof(int));
+  rdispls = calloc(size,sizeof(int));
+  index=0;
+  for (int i = 0; i < size; ++i)
+  {
+    sendcounts[i]= len[i]*matrixSize;
+    rdispls[i]=index;
+    index=index+sendcounts[i];
+  }
+  MPI_Gatherv(gatherSendBuf, matrixSize * len[rank], MPI_DOUBLE, gatherRecvBuf, sendcounts, rdispls, MPI_DOUBLE, 0,MPI_COMM_WORLD );
+}
 
 
 void init_app(int argc, char** argv, int* rank, int* size)

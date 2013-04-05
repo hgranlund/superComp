@@ -3,63 +3,64 @@
 int main(int argc, char **argv )
 {
   double time=MPI_Wtime();
-  Real *diag, **b, *gatherSendBuf, *gatherRecvBuf, *z;
-  Real pi, h, umax;
-  int i, j, n, m, nn, rank, size , *len, *disp, ml, il;
+  Real **b, *diag, *gatherRecvBuf,*z, h, umax;
+  int i, j, n, m, nn, rank, size , *len, *disp;
 
   if( argc < 2 ) {
     printf("need a problem size\n");
     return 0;
   }
+
   init_app (argc, argv, &rank, &size);
   n  = atoi(argv[1]);
   m  = n-1;
   nn = 4*n;
   splitVector(m, size, &len, &disp);
-  ml = len[rank];
-  il = disp[rank];
   diag = createRealArray (m);
-  b    = createReal2DArray (ml,m);
+  b    = createReal2DArray (len[rank],m);
   z    = createRealArray (nn);
   h    = 1./(Real)n;
-  pi   = 4.*atan(1.);
 
+  #pragma omp parallel for schedule(static)
   for (i=0; i < m; i++) {
-    diag[i] = 2.*(1.-cos((i+1)*pi/(Real)n));
+    diag[i] = 2.*(1.-cos((i+1)*M_PI/(Real)n));
   }
-  for (j=0; j < ml; j++) {
+
+  #pragma omp parallel for schedule(static)
+  for (j=0; j < len[rank]; j++) {
     for (i=0; i < m; i++) {
       b[j][i] = h*h;
     }
   }
 
   #pragma omp parallel for schedule(static)
-  for (j=0; j < ml; j++) {
+  for (j=0; j < len[rank]; j++) {
     fst_(b[j], &n, z, &nn);
   }
 
   transpose(b, size, len, disp, rank, m);
 
   #pragma omp parallel for schedule(static)
-  for (i=0; i < ml; i++) {
+  for (i=0; i < len[rank]; i++) {
     fstinv_(b[i], &n, z, &nn);
   }
 
-  for (j=0; j < ml; j++) {
+  #pragma omp parallel for schedule(static)
+  for (j=0; j < len[rank]; j++) {
     for (i=0; i < m; i++) {
-      b[j][i] = b[j][i]/(diag[i]+diag[j+il]);
+      b[j][i] = b[j][i]/(diag[i]+diag[j+disp[rank]]);
     }
   }
 
   #pragma omp parallel for schedule(static)
-  for (i=0; i < ml; i++) {
+  for (i=0; i < len[rank]; i++) {
     fst_(b[i], &n, z, &nn);
   }
 
   transpose(b, size, len, disp, rank, m);
 
   #pragma omp parallel for schedule(static)
-  for (j=0; j < ml; j++) {
+  for (j=0; j < len[rank]; j++) {
     fstinv_(b[j], &n, z, &nn);
   }
 
@@ -68,24 +69,12 @@ int main(int argc, char **argv )
     gatherRecvBuf = createRealArray (m*m);
   }
 
-  gatherSendBuf = createRealArray (m*ml);
-  matrixToVector(b, gatherSendBuf, len, disp, size, rank);
-  int *sendcounts, *rdispls, index;
-  sendcounts = calloc(size,sizeof(int));
-  rdispls = calloc(size,sizeof(int));
-  index=0;
-  for (int i = 0; i < size; ++i)
-  {
-    sendcounts[i]= len[i]*m;
-    rdispls[i]=index;
-    index=index+sendcounts[i];
-  }
-  MPI_Gatherv(gatherSendBuf, m*ml, MPI_DOUBLE, gatherRecvBuf, sendcounts, rdispls, MPI_DOUBLE, 0,MPI_COMM_WORLD );
+  gatherMatrix(b, m, gatherRecvBuf, len, disp,0);
 
-  umax = 0.0;
 
   if (rank==0)
   {
+    umax = 0.0;
     for (i=0; i < m*m; i++) {
       if (gatherRecvBuf[i] > umax) umax = gatherRecvBuf[i];
     }
