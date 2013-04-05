@@ -21,10 +21,12 @@ int main(int argc, char **argv )
   z    = createRealArray (nn);
   h    = 1./(Real)n;
 
+  #pragma omp parallel for schedule(static)
   for (i=0; i < m; i++) {
     diag[i] = 2.*(1.-cos((i+1)*M_PI/(Real)n));
   }
 
+  #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
     for (i=0; i < m; i++) {
       b[j][i] = h*h;
@@ -43,6 +45,7 @@ int main(int argc, char **argv )
     fstinv_(b[i], &n, z, &nn);
   }
 
+  #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
     for (i=0; i < m; i++) {
       b[j][i] = b[j][i]/(diag[i]+diag[j+disp[rank]]);
@@ -68,10 +71,10 @@ int main(int argc, char **argv )
 
   gatherMatrix(b, m, gatherRecvBuf, len, disp,0);
 
-  umax = 0.0;
 
   if (rank==0)
   {
+    umax = 0.0;
     for (i=0; i < m*m; i++) {
       if (gatherRecvBuf[i] > umax) umax = gatherRecvBuf[i];
     }
