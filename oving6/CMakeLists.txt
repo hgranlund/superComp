@@ -19,11 +19,13 @@ ENABLE_LANGUAGE(Fortran)
 
 # We require MPI
 FIND_PACKAGE(MPI REQUIRED)
+FIND_PACKAGE(OpenMP)
 
 # Add the MPI include path so that our program will find mpi.h
 SET(INCLUDES ${INCLUDES} ${MPI_INCLUDE_PATH})
 
 SET(DEPLIBS ${DEPLIBS} ${MPI_C_LIBRARIES})
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
 
 # Send the include directories to the compiler
 INCLUDE_DIRECTORIES(${INCLUDES})
