@@ -27,14 +27,18 @@ void runPoision(int rank, int size, int n){
 
   #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
+    Real* zt = createRealArray (nn);
     fst_(b[j], &n, z, &nn);
+    free(zt);
   }
 
   transpose(b, size, len, disp, rank, m);
 
   #pragma omp parallel for schedule(static)
   for (i=0; i < len[rank]; i++) {
+    Real* zt  = createRealArray (nn);
     fstinv_(b[i], &n, z, &nn);
+    free(zt);
   }
 
   #pragma omp parallel for schedule(static)
@@ -46,14 +50,18 @@ void runPoision(int rank, int size, int n){
 
   #pragma omp parallel for schedule(static)
   for (i=0; i < len[rank]; i++) {
+    Real* zt  = createRealArray (nn);
     fst_(b[i], &n, z, &nn);
+    free(zt);
   }
 
   transpose(b, size, len, disp, rank, m);
 
   #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
+    Real* zt  = createRealArray (nn);
     fstinv_(b[j], &n, z, &nn);
+    free(zt);
   }
 
   if (rank==0)
@@ -83,29 +91,29 @@ int main(int argc, char **argv )
   if( argc < 2 ) {
     if (rank == 0){
      printf("need a problem size\n");
-    }
-     MPI_Finalize();
-     return 0;
-  }
+   }
+   MPI_Finalize();
+   return 0;
+ }
 
-  if( argc == 2 ) {
-    n  = atoi(argv[1]);
-    runPoision(rank, size, n);
-  }
+ if( argc == 2 ) {
+  n  = atoi(argv[1]);
+  runPoision(rank, size, n);
+}
 
-  else{
-    n  = atoi(argv[1]);
-    nrange  = atoi(argv[2]);
-    if (rank==0){
-      printf("Running with gridpionts n=2^k, with k ∈ [%d,%d]\n", n, nrange);
-      printf ("================================================== \n");
-    }
-    for (int i = n; i <= nrange ; ++i){
-      runPoision(rank, size, pow(2,i));
-    }
+else{
+  n  = atoi(argv[1]);
+  nrange  = atoi(argv[2]);
+  if (rank==0){
+    printf("Running with gridpionts n=2^k, with k ∈ [%d,%d]\n", n, nrange);
+    printf ("================================================== \n");
   }
+  for (int i = n; i <= nrange ; ++i){
+    runPoision(rank, size, pow(2,i));
+  }
+}
 
-  MPI_Finalize();
-  return 0;
+MPI_Finalize();
+return 0;
 }
 
