@@ -1,18 +1,10 @@
 #include "common.h"
 
-int main(int argc, char **argv )
-{
+void runPoision(int rank, int size, int n){
   double time=MPI_Wtime();
   Real **b, *diag, *gatherRecvBuf,*z, h, umax;
-  int i, j, n, m, nn, rank, size , *len, *disp;
+  int i, j, m, nn, *len, *disp;
 
-  if( argc < 2 ) {
-    printf("need a problem size\n");
-    return 0;
-  }
-
-  init_app (argc, argv, &rank, &size);
-  n  = atoi(argv[1]);
   m  = n-1;
   nn = 4*n;
   splitVector(m, size, &len, &disp);
@@ -78,10 +70,42 @@ int main(int argc, char **argv )
     for (i=0; i < m*m; i++) {
       if (gatherRecvBuf[i] > umax) umax = gatherRecvBuf[i];
     }
-    printf("elapsed: %f\n", MPI_Wtime()-time);
-    printf (" umax = %e \n",umax);
+    printf ("Maximum Pointwise Error = %e, with n = %d \n",umax, n);
+    printf("Elapsed time: %f\n", MPI_Wtime()-time);
+    printf ("================================================== \n");
+  }
+}
+
+int main(int argc, char **argv )
+{
+  int rank, size, n, nrange;
+  init_app (argc, argv, &rank, &size);
+  if( argc < 2 ) {
+    if (rank == 0){
+     printf("need a problem size\n");
+    }
+     MPI_Finalize();
+     return 0;
+  }
+
+  if( argc == 2 ) {
+    n  = atoi(argv[1]);
+    runPoision(rank, size, n);
+  }
+
+  else{
+    n  = atoi(argv[1]);
+    nrange  = atoi(argv[2]);
+    if (rank==0){
+      printf("Running with gridpionts n=2^k, with k ∈ [%d,%d]\n", n, nrange);
+      printf ("================================================== \n");
+    }
+    for (int i = n; i <= nrange ; ++i){
+      runPoision(rank, size, pow(2,i));
+    }
   }
 
   MPI_Finalize();
   return 0;
 }
+
