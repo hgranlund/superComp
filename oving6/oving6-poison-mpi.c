@@ -86,6 +86,11 @@ int main(int argc, char **argv )
 {
   int rank, size, n, nrange;
   init_app (argc, argv, &rank, &size);
+  if (rank == 0){
+    printf("Numer of threads per node = %d \n", omp_get_max_threads());
+    printf("Number of MPI proc = %d \n", size);
+    printf ("================================================== \n");
+  }
   if( argc < 2 ) {
     if (rank == 0){
      printf("need a problem size\n");
