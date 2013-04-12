@@ -20,6 +20,9 @@
 # Join stdout and stderr output to one file
 #PBS -j oe
 
+#PBS -m abe
+#PBS -M simen@hgranlund.com
+
 # Change directory to dir with the job script
 cd ${PBS_O_WORKDIR}
 
@@ -30,5 +33,11 @@ module load openmpi/1.4.3-intel
 # Set thread affinity
 KMP_AFFINITY="granularity=fine,compact"
 
+
 # Run with 8 MPI processes, each with 3 threads
-OMP_NUM_THREADS=3 mpirun -npernode 4 oving6-poison-mpi 16384
+OMP_NUM_THREADS=1 mpirun -npernode 12 oving6-poison-mpi 5 14
+OMP_NUM_THREADS=2 mpirun -npernode 6 oving6-poison-mpi 5 14
+OMP_NUM_THREADS=3 mpirun -npernode 4 oving6-poison-mpi 5 14
+OMP_NUM_THREADS=4 mpirun -npernode 3 oving6-poison-mpi 5 14
+OMP_NUM_THREADS=6 mpirun -npernode 2 oving6-poison-mpi 5 14
+OMP_NUM_THREADS=12 mpirun -npernode 1 oving6-poison-mpi 5 14
