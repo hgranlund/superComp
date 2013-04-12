@@ -24,7 +24,6 @@ void matrixToVector(Real **matrix, Real *vector, int *len, int *disp, int size, 
     {
       for (int k = 0; k < len[i]; ++k)
       {
-
         vector[index] = matrix[j][disp[i]+k];
         index++;
       }
@@ -96,15 +95,20 @@ void gatherMatrix(Real** Matrix, int matrixSize, Real* gatherRecvBuf, int* len, 
   MPI_Comm_size(MPI_COMM_WORLD, &size);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   gatherSendBuf = createRealArray (matrixSize * len[rank]);
-  matrixToVector(Matrix, gatherSendBuf, len, disp, size, rank);
+  for (int i = 0; i < len[rank]; ++i)
+  {
+    for (int j = 0; j < matrixSize; ++j)
+    {
+      gatherSendBuf[i*matrixSize+j]=Matrix[i][j];
+    }
+  }
   sendcounts = calloc(size,sizeof(int));
   rdispls = calloc(size,sizeof(int));
   index=0;
   for (int i = 0; i < size; ++i)
   {
     sendcounts[i]= len[i]*matrixSize;
-    rdispls[i]=index;
-    index=index+sendcounts[i];
+    rdispls[i]=i*matrixSize;
   }
   MPI_Gatherv(gatherSendBuf, matrixSize * len[rank], MPI_DOUBLE, gatherRecvBuf, sendcounts, rdispls, MPI_DOUBLE, 0,MPI_COMM_WORLD );
 }
@@ -121,6 +125,14 @@ Real maxMatrix(Real** Matrix, int matrixSize, int* len, int root){
   }
   MPI_Reduce(&localuMax, &uMax, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
   return uMax;
+}
+
+void printRoot(const char *string, int rank)
+{
+  if (rank==0)
+  {
+    printf("%s",string );
+  }
 }
 
 

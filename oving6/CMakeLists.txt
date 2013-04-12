@@ -32,6 +32,9 @@ INCLUDE_DIRECTORIES(${INCLUDES})
 
 ADD_LIBRARY(common common.c)
 ADD_EXECUTABLE(poisson oving6-poison-mpi.c fst.f)
+ADD_EXECUTABLE(poisson-plot oving6-poison-mpi-plot.c fst.f)
 SET_TARGET_PROPERTIES(poisson PROPERTIES LINKER_LANGUAGE C)
-
+SET_TARGET_PROPERTIES(poisson-plot PROPERTIES LINKER_LANGUAGE C)
 TARGET_LINK_LIBRARIES(poisson common ${DEPLIBS})
+TARGET_LINK_LIBRARIES(poisson-plot common ${DEPLIBS})
+
