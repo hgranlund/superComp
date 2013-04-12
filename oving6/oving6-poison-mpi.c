@@ -1,8 +1,8 @@
 #include "common.h"
 
-void runPoision(int rank, int size, int n){
+void runPoisson(int rank, int size, int n){
   double time=MPI_Wtime();
-  Real **b, *diag, *gatherRecvBuf,*z, h, umax;
+  Real **b, *diag, *RecvBuf,*z, h, umax;
   int i, j, m, nn, *len, *disp;
 
   m  = n-1;
@@ -18,8 +18,9 @@ void runPoision(int rank, int size, int n){
     diag[i] = 2.*(1.-cos((i+1)*M_PI/(Real)n));
   }
 
-  #pragma omp parallel for schedule(static)
+  #pragma omp for
   for (j=0; j < len[rank]; j++) {
+  #pragma omp parallel for schedule(static)
     for (i=0; i < m; i++) {
       b[j][i] = h*h;
     }
@@ -28,7 +29,7 @@ void runPoision(int rank, int size, int n){
   #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
     Real* zt = createRealArray (nn);
-    fst_(b[j], &n, z, &nn);
+    fst_(b[j], &n, zt, &nn);
     free(zt);
   }
 
@@ -37,12 +38,13 @@ void runPoision(int rank, int size, int n){
   #pragma omp parallel for schedule(static)
   for (i=0; i < len[rank]; i++) {
     Real* zt  = createRealArray (nn);
-    fstinv_(b[i], &n, z, &nn);
+    fstinv_(b[i], &n, zt, &nn);
     free(zt);
   }
 
-  #pragma omp parallel for schedule(static)
+  #pragma omp for
   for (j=0; j < len[rank]; j++) {
+  #pragma omp parallel for schedule(static)
     for (i=0; i < m; i++) {
       b[j][i] = b[j][i]/(diag[i]+diag[j+disp[rank]]);
     }
@@ -51,7 +53,7 @@ void runPoision(int rank, int size, int n){
   #pragma omp parallel for schedule(static)
   for (i=0; i < len[rank]; i++) {
     Real* zt  = createRealArray (nn);
-    fst_(b[i], &n, z, &nn);
+    fst_(b[i], &n, zt, &nn);
     free(zt);
   }
 
@@ -60,24 +62,20 @@ void runPoision(int rank, int size, int n){
   #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
     Real* zt  = createRealArray (nn);
-    fstinv_(b[j], &n, z, &nn);
+    fstinv_(b[j], &n, zt, &nn);
     free(zt);
   }
 
+
+  umax = maxMatrix(b, m, len,0);
+  // if (rank==0)
+  // {
+  //   RecvBuf = createRealArray (m*m);
+  // }
+  // // gatherMatrix(b, m, RecvBuf, len, disp,0);
+
   if (rank==0)
   {
-    gatherRecvBuf = createRealArray (m*m);
-  }
-
-  gatherMatrix(b, m, gatherRecvBuf, len, disp,0);
-
-
-  if (rank==0)
-  {
-    umax = 0.0;
-    for (i=0; i < m*m; i++) {
-      if (gatherRecvBuf[i] > umax) umax = gatherRecvBuf[i];
-    }
     printf ("Maximum Pointwise Error = %e, with n = %d \n",umax, n);
     printf("Elapsed time: %f\n", MPI_Wtime()-time);
     printf ("================================================== \n");
@@ -98,7 +96,7 @@ int main(int argc, char **argv )
 
  if( argc == 2 ) {
   n  = atoi(argv[1]);
-  runPoision(rank, size, n);
+  runPoisson(rank, size, n);
 }
 
 else{
@@ -109,7 +107,7 @@ else{
     printf ("================================================== \n");
   }
   for (int i = n; i <= nrange ; ++i){
-    runPoision(rank, size, pow(2,i));
+    runPoisson(rank, size, pow(2,i));
   }
 }
 

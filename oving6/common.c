@@ -109,6 +109,20 @@ void gatherMatrix(Real** Matrix, int matrixSize, Real* gatherRecvBuf, int* len, 
   MPI_Gatherv(gatherSendBuf, matrixSize * len[rank], MPI_DOUBLE, gatherRecvBuf, sendcounts, rdispls, MPI_DOUBLE, 0,MPI_COMM_WORLD );
 }
 
+Real maxMatrix(Real** Matrix, int matrixSize, int* len, int root){
+  int rank;
+  Real uMax, localuMax;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  localuMax = 0.0;
+  for (int j=0; j < len[rank]; j++) {
+    for (int i=0; i < matrixSize; i++) {
+      if (Matrix[j][i] > localuMax) localuMax = Matrix[j][i];
+    }
+  }
+  MPI_Reduce(&localuMax, &uMax, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
+  return uMax;
+}
+
 
 void init_app(int argc, char** argv, int* rank, int* size)
 {
@@ -116,6 +130,11 @@ void init_app(int argc, char** argv, int* rank, int* size)
   MPI_Comm_size(MPI_COMM_WORLD, size);
   MPI_Comm_rank(MPI_COMM_WORLD, rank);
 }
+
+  // for (int i = 0; i < matrixSize * len[rank]; ++i)
+  // {
+  //   printf("%d:%e \n ", i, Matrix[i]);
+  // }
 
 
 
