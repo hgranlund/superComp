@@ -271,7 +271,15 @@ $$ U = S^{-1}((S(\widetilde{U}^T))^T) $$
 
 \subsection{Verifikasjon av resultat}
 
+Vi må verifisere at programmet vårt gjør beregningene riktig. Dette gjør vi ved å benytte en verdi for $f(x,y)$ som vi vet fører til en kjent analytisk løsning $u(x,y)$. Ved å sammenligne den eksakte løsningen $u(x,y)$ med løsningen programmet vårt gir kan vi finne den maksimale punktfeilen. Det er forventet at punktfeilen reduseres når vi øker antall beregningspunkter. 
 
+$$ -\Delta u = f(x,y) = 5\pi^2sin(\pi x)sin(2\pi y) $$
+
+som gir den analytiske løsningen
+
+$$ u(x,y) = sin(\pi x)sin(2\pi y) $$
+
+Programmet returnerer den maksimale punktvise feilen. Om denne er tilstrekkelig liten konkluderer vi med at resultatet er korrekt. 
 
 \section{Parallellprosessering}
 
@@ -283,20 +291,26 @@ For å kunne kjøre programmet på flere prosessorer er det nødvendig å dele o
 \caption{Figur hentet fra oppgaveteksten om transponeringen}
 \end{figure}
 
-Når beregningene er ferdige er resultatene spredd utover prosessene. Løsningen består
+Når beregningene er ferdige er resultatene spredd utover prosessene. Resultatet er den maksimale punktvise feilen i forhold til den eksakte løsningen. Vi er interessert i den maksimale punktvise feilen over alle prosesser og ikke på hver enkelt prosess. Vi finner den maksimale globale feilen ved å bruke MPI-funksjonen MPI\_Reduce med opsjonen MPI\_MAX. På denne måten får vi et resultat og ikke et for hver prosess.
+
+I tillegg har vi laget en funksjon som samler inn verdien i hvert beregningspunkt fra alle prosesser og kombinerer dette i én matrise. Denne matrisen kan vi så bruke for å visualisere resultatet med for eksempel Gnuplot\cite{gnuplot}. Dette gjøres med funksjonen MPI\_Gatherv. For å kunne sende dataene ved hjelp av denne funksjonen må vi på samme måte som ved bruken av MPI\_Alltoallv transformere prosessenes matriser til en vektor. Deretter kan vi pakke ut vektoren på rotprosessen til løsningsmatrisa.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.25]{plot_n128.png}
+\caption{Visualisering av løsningen ved 16384 beregningspunkter (n=128)}
+\end{figure}
 
 
-    % På maskiner med distrubuert minne kan vi dra nytte av MPI-biblioteket\cite{MPI} for å løse ligningssystemet. Ved å dele opp kolonnevis etter behov kan vi gjøre sinustransformasjonen parallelt. Utfordringen blir da å transponere matrisen på tvers av prosesser med MPI. Kolonnene hver enkelt prosess har tilgang til gjøres om til en vektor og sendes oppdelt med MPI\_Alltoallv til de respektive prosesser. Prosessen som mottar vektoren pakker denne ut til sin del av matrisa og kan gjøre videre beregninger.
+Videre kan ytterligere forbedringer gjøres for å forbedre parallelliteten. Ved å bruke OpenMP\cite{MP} kan vi bruke flere tråder innen hver prosess slik at sinustransformasjonen gjennomføres ved en høyere grad av parallellitet. Her dukker det opp en utfordring med minnebruk da hver tråd krever en del av minne for å kunne utføre sinustransformasjonen. Dette vil bli diskutert i detalj senere i rapporten.
 
-    % Videre kan ytterligere forbedringer gjøres for å forbedre parallelliteten. Ved å bruke OpenMP\cite{MP} kan vi bruke flere tråder innen hver prosess slik at sinustransformasjonen gjennomføres ved en høyere grad av parallellitet. Her dukker det opp en utfordring med minnebruk da hver tråd krever en del av minne for å kunne utføre sinustransformasjonen.
+\subsection{Speedup og parallellitet}
 
-    \subsection{Speedup og parallellitet}
+\section{Resultater}
 
-    \section{Resultater}
+\section{Analyse}
 
-    \section{Analyse}
-
-    \section{Konklusjon}
+\section{Konklusjon}
 
 
 % EXAMPLE OF CODE INCLUSION: \lstinputlisting[language=C, firstline=53, lastline=71, caption=MPI version]{../src/oving4-openmpi.c}
@@ -316,6 +330,9 @@ OpenMPI, Open Source High Performance Computing, \it{http://www.open-mpi.org/}, 
 
 \bibitem{MP}
 OpenMP, \it{http://www.open-mpi.org/}, 12.04.2013
+
+\bibitem{gnuplot}
+Gnuplot, \it{http://www.gnuplot.info/}
 \end{thebibliography}
 
 \end{document}
