@@ -1,8 +1,13 @@
 #include "common.h"
 
+Real funcf(Real x, Real y)
+{
+  return (5*M_PI*M_PI*sin(M_PI*x)*sin(2*M_PI*y));
+}
+
 void runPoisson(int rank, int size, int n){
   double time=MPI_Wtime();
-  Real **b, *diag, *RecvBuf,*z, h, umax;
+  Real **b, *diag, *RecvBuf,*z, h, maxError;
   int i, j, m, nn, *len, *disp;
 
   m  = n-1;
@@ -22,7 +27,9 @@ void runPoisson(int rank, int size, int n){
   for (j=0; j < len[rank]; j++) {
   #pragma omp parallel for schedule(static)
     for (i=0; i < m; i++) {
-      b[j][i] = h*h;
+      Real x=(Real)(j+1+disp[rank])/n;
+      Real y=(Real) (i+1)/n;
+      b[j][i] = h*h * funcf(x,y);
     }
   }
 
@@ -67,16 +74,11 @@ void runPoisson(int rank, int size, int n){
   }
 
 
-  umax = maxMatrix(b, m, len,0);
-  // if (rank==0)
-  // {
-  //   RecvBuf = createRealArray (m*m);
-  // }
-  // // gatherMatrix(b, m, RecvBuf, len, disp,0);
+  maxError = maxPointwiseError(b, m, len, disp, 0);
 
   if (rank==0)
   {
-    printf ("Maximum Pointwise Error = %e, with n = %d \n",umax, n);
+    printf ("Maximum Pointwise Error = %e, with n = %d \n",maxError, n);
     printf("Elapsed time: %f\n", MPI_Wtime()-time);
     printf ("================================================== \n");
   }

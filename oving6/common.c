@@ -108,31 +108,27 @@ void gatherMatrix(Real** Matrix, int matrixSize, Real* gatherRecvBuf, int* len, 
   for (int i = 0; i < size; ++i)
   {
     sendcounts[i]= len[i]*matrixSize;
-    rdispls[i]=i*matrixSize;
+    rdispls[i]=index;
+    index=index+sendcounts[i];
   }
   MPI_Gatherv(gatherSendBuf, matrixSize * len[rank], MPI_DOUBLE, gatherRecvBuf, sendcounts, rdispls, MPI_DOUBLE, 0,MPI_COMM_WORLD );
 }
 
-Real maxMatrix(Real** Matrix, int matrixSize, int* len, int root){
+Real maxPointwiseError(Real** Matrix, int matrixSize, int* len, int* disp, int root){
   int rank;
-  Real uMax, localuMax;
+  Real maxError, localeMaxError, x, y, n;
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  localuMax = 0.0;
+  localeMaxError = 0.0;
+  n=matrixSize+1;
   for (int j=0; j < len[rank]; j++) {
     for (int i=0; i < matrixSize; i++) {
-      if (Matrix[j][i] > localuMax) localuMax = Matrix[j][i];
+      x=(Real)(j+1+disp[rank])/n;
+      y=(Real) (i+1)/n;
+      if (Matrix[j][i] > localeMaxError) localeMaxError = Matrix[j][i]-(sin(x*M_PI)*sin(2*y*M_PI));
     }
   }
-  MPI_Reduce(&localuMax, &uMax, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
-  return uMax;
-}
-
-void printRoot(const char *string, int rank)
-{
-  if (rank==0)
-  {
-    printf("%s",string );
-  }
+  MPI_Reduce(&localeMaxError, &maxError, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
+  return maxError;
 }
 
 
