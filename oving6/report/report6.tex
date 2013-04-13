@@ -67,9 +67,9 @@
 \definecolor{medGray}{RGB}{230,230,230}
 
 \newenvironment{important}[2][]{
-        \setkeys{EmphEqEnv}{#2}
-        \setkeys{EmphEqOpt}{box={\setlength{\fboxsep}{10pt}\colorbox{medGray}},#1}
-        \EmphEqMainEnv}
+\setkeys{EmphEqEnv}{#2}
+\setkeys{EmphEqOpt}{box={\setlength{\fboxsep}{10pt}\colorbox{medGray}},#1}
+\EmphEqMainEnv}
 {\endEmphEqMainEnv}
 
 %----------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@
         firstnumber=1, % Line numbers start with line 1
         numberstyle=\tiny\color{Blue}, % Line numbers are blue and small
         stepnumber=5 % Line numbers go in steps of 5
-}
+        }
 
 % Creates a new command to include a perl script, the first parameter is the filename of the script (without .pl), the second parameter is the caption
 \newcommand{\perlscript}[2]{
@@ -196,7 +196,7 @@
 
 % \newpage
 % \tableofcontents
- \newpage
+\newpage
 
 %----------------------------------------------------------------------------------------
 %	SOLUTION
@@ -208,31 +208,31 @@
 Programmet skal kunne løse Poisson-ligningen i domenet $ x= [0..1], y = [0..1]. $ Poisson-ligningen er på formen:
 
 \begin{equation} 
-    -\Delta^2\phi = f(x.y)
+-\Delta^2\phi = f(x,y)
 \end{equation}
 \begin{equation}
-    -\Delta^2\phi = -\frac{\partial^2\phi}{\partial x^2} - \frac{\partial^2\phi}{\partial x^2} = -u_{xx}-u_{yy} = f(x,y)
+-\Delta^2\phi = -\frac{\partial^2\phi}{\partial x^2} - \frac{\partial^2\phi}{\partial x^2} = -u_{xx}-u_{yy} = f(x,y)
 \end{equation}
 
 Vi trenger en form av denne som kan løses numerisk. Den må diskretiseres slik at en datamaskin skal kunne løse den. For å få til dette forsøker vi å Taylor-utvikle i  x-, og y-retning. Viser kun utviklingen i x-retning da utregningene er tilsvarende for y.
 
 \begin{equation}
-    u(x+h,y) = u(x,y) + hu_x(x,y) + \frac{1}{2}h^2u_{xx}(x,y) + \frac{1}{6}h^3u_{xxx}(x,y)+ ...
+u(x+h,y) = u(x,y) + hu_x(x,y) + \frac{1}{2}h^2u_{xx}(x,y) + \frac{1}{6}h^3u_{xxx}(x,y)+ ...
 \end{equation}
 \begin{equation}
-    u(x-h,y) = u(x,y) - hu_x(x,y) + \frac{1}{2}h^2u_{xx}(x,y)- \frac{1}{6}h^3u_{xxx}(x,y)+ ...
+u(x-h,y) = u(x,y) - hu_x(x,y) + \frac{1}{2}h^2u_{xx}(x,y)- \frac{1}{6}h^3u_{xxx}(x,y)+ ...
 \end{equation}
 
 Vi ser bortifra høyere ordens ledd ($h^3, h^4$...), og løser for $u_{xx}$.
 
 \begin{equation}
-    u_{xx}(x,y) \approx \frac{1}{h^2}(u(x+h,y)-2u(x,y)+u(x-h,y))
+u_{xx}(x,y) \approx \frac{1}{h^2}(u(x+h,y)-2u(x,y)+u(x-h,y))
 \end{equation}
 
 Dermed har vi nå et uttrykk for $u_{xx}$ som er lettere å forstå for en datamaskin. Tilsvarende har vi et uttrykk for $u_{yy}$. Vi legger disse sammen og får et diskretisert uttrykk for Poisson-ligningen, også kalt fem-punktsformelen.
 
 \begin{important}{equation}
-    -u(x+h,y)-u(x,y+h)-u(x-h,y)-u(x,y-h)+4u(x,y) = h^2f(x,y)
+-u(x+h,y)-u(x,y+h)-u(x-h,y)-u(x,y-h)+4u(x,y) = h^2f(x,y)
 \end{important}
 
 I (6) betegner $f$ hvor finkjemmet rutenett som benyttes (steglengden). Det diskretiserte uttrykket løser problemet i punkt for punkt, og tettheten til punktskyen avhenger av h. Vi kan se at hvert punkt avhenger av nabopunktene (firer-naboer) i x- og y-retning både negativt og positivt. Utifra den observasjonen kan vi sette opp et stensil som gjør det enklere å se hva den betyr.
@@ -247,6 +247,57 @@ Utifra stensilen kan vi sette opp en ligning for hvert punkt. Høyresiden blir $
 
 Vi kan sette ligningene sammen til et system på formen \textbf{Ax = b}. Som kan løses av en datamaskin på mange måter. Antall punkt, og dermed antall ligninger, avhenger av $h$, og vokser i graden $h^2$. Det betyr at dersom vi dobler antall punkt, firedobler vi antall ligninger maskinen må løse. 
 
+\section{Løsning av ligningssystemet}
+
+For å løse Poissons ligning gjenstår å løse ligningssystemet $AU=B$. Dimensjonen på matrisen A er $(N-1)^2$, og er 'sparse'. Matrisen er en båndmatrise med båndbredde lik $b=n$. Et slikt ligningssystem kan løses ved mange ulike metoder, og er et viktig tema innen numerisk algebra og algoritmer. Oppgaven krever at vi løser systemet ved bruk av FST (Fast Sine Transform). FST er implementert i en gitt Fortran-kode som vi skal anse som en 'black box'. Koden utfører en diskret sinustransformasjon og dets inverse motpart.
+
+\subsection{Diagonalisering}
+
+Gitt systemet:
+
+$$ AU=B $$
+
+Deretter kan vi konvertere B til eigenvectorrommet ved hjelp av S som her er sinus transformasjonen gitt slik:
+
+$$ \widetilde{B} = S^{-1}((S(B))^T) $$
+
+Med dette kan vi finne $\widetilde{U}$ ved å skalere med eigenverdier
+
+$$ \widetilde{u}_{i,j} = \frac{\widetilde{b}_{i,j}}{\lambda_{i}+\lambda_{j}} \quad 1 \leq i,1 \leq n-1 $$
+
+Ved hjelp av uttrykket for $\widetilde{U}$ kan vi finne løsningen $U$
+
+$$ U = S^{-1}((S(\widetilde{U}^T))^T) $$
+
+\subsection{Verifikasjon av resultat}
+
+
+
+\section{Parallellprosessering}
+
+For å kunne kjøre programmet på flere prosessorer er det nødvendig å dele opp problemet i mindre deler. MPI-biblioteket\cite{MPI} gjør oss i stand til å kjøre programmet over flere uavhengige prosesser. Ved å dele matrisen B i kolonner og fordele disse utover MPI-prosessene kan vi gjøre sinustransformasjoner parallelt. Dette innfører en ny utfordring da hver prosess har informasjon som trengs av andre prosesser ved transponeringen av matrisen B. Vi må sende data over nettverk for å kunne transponere matrisen. For å gjøre dette deler vi opp kolonnene inn i blokker hvor hver blokk skal sendes til en annen prosess. Det er MPI-kallet MPI\_Alltoallv som sender dataene. Dette kallet kan sende en vektor og informasjon om hvilken prosess som trenger hvilken del av denen vektoren. Derfor transformeres kolonnene til en lang vektor sortert etter blokkoppdelingen. Når de respektive vektorer blir mottatt av den prosessen de hører til blir disse så transformert tilbake til en matrise for videre beregninger. Tilbaketransformasjonen sørger for at matrisen nå er transponert.
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.3]{transpose.png}
+\caption{Figur hentet fra oppgaveteksten om transponeringen}
+\end{figure}
+
+Når beregningene er ferdige er resultatene spredd utover prosessene. Løsningen består
+
+
+    % På maskiner med distrubuert minne kan vi dra nytte av MPI-biblioteket\cite{MPI} for å løse ligningssystemet. Ved å dele opp kolonnevis etter behov kan vi gjøre sinustransformasjonen parallelt. Utfordringen blir da å transponere matrisen på tvers av prosesser med MPI. Kolonnene hver enkelt prosess har tilgang til gjøres om til en vektor og sendes oppdelt med MPI\_Alltoallv til de respektive prosesser. Prosessen som mottar vektoren pakker denne ut til sin del av matrisa og kan gjøre videre beregninger.
+
+    % Videre kan ytterligere forbedringer gjøres for å forbedre parallelliteten. Ved å bruke OpenMP\cite{MP} kan vi bruke flere tråder innen hver prosess slik at sinustransformasjonen gjennomføres ved en høyere grad av parallellitet. Her dukker det opp en utfordring med minnebruk da hver tråd krever en del av minne for å kunne utføre sinustransformasjonen.
+
+    \subsection{Speedup og parallellitet}
+
+    \section{Resultater}
+
+    \section{Analyse}
+
+    \section{Konklusjon}
+
 
 % EXAMPLE OF CODE INCLUSION: \lstinputlisting[language=C, firstline=53, lastline=71, caption=MPI version]{../src/oving4-openmpi.c}
 
@@ -255,11 +306,16 @@ Vi kan sette ligningene sammen til et system på formen \textbf{Ax = b}. Som kan
 \begin{thebibliography}{99}
 
 \bibitem{ky}
-    Erwin Kreyzig,
-    \emph{Advanced Engineering Mathematics}.
-    9th Edition,
-    2006.
-    
+Erwin Kreyzig,
+\emph{Advanced Engineering Mathematics}.
+9th Edition,
+2006.
+
+\bibitem{MPI}
+OpenMPI, Open Source High Performance Computing, \it{http://www.open-mpi.org/}, 12.04.2013
+
+\bibitem{MP}
+OpenMP, \it{http://www.open-mpi.org/}, 12.04.2013
 \end{thebibliography}
 
 \end{document}
