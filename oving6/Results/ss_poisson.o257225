@@ -1,0 +1,36 @@
+chown: cannot access `/state/partition1/scratch/pbstmp.257225.rocks.hpc.ntnu.no': No such file or directory
+Numer of threads per node = 1 
+Number of MPI proc = 36 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.036507
+================================================== 
+Maximum Pointwise Error = 6.686197e-05, with n = 64 
+Elapsed time: 0.002483
+================================================== 
+Maximum Pointwise Error = 8.373035e-06, with n = 128 
+Elapsed time: 0.005044
+================================================== 
+Maximum Pointwise Error = 1.046871e-06, with n = 256 
+Elapsed time: 0.007412
+================================================== 
+Maximum Pointwise Error = 1.308664e-07, with n = 512 
+Elapsed time: 0.022812
+================================================== 
+Maximum Pointwise Error = 1.635853e-08, with n = 1024 
+Elapsed time: 0.096963
+================================================== 
+Maximum Pointwise Error = 2.045413e-09, with n = 2048 
+Elapsed time: 0.440880
+================================================== 
+Maximum Pointwise Error = 2.556536e-10, with n = 4096 
+Elapsed time: 1.886324
+================================================== 
+Maximum Pointwise Error = 3.182855e-11, with n = 8192 
+Elapsed time: 7.917254
+================================================== 
+Maximum Pointwise Error = 3.407685e-12, with n = 16384 
+Elapsed time: 33.001897
+================================================== 
