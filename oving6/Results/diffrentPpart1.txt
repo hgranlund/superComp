@@ -1,0 +1,420 @@
+Numer of threads per node = 1 
+Number of MPI proc = 3 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 4.929481e-04, with n = 32 
+Elapsed time: 0.001262
+================================================== 
+Maximum Pointwise Error = 5.903811e-05, with n = 64 
+Elapsed time: 0.002345
+================================================== 
+Maximum Pointwise Error = 7.386582e-06, with n = 128 
+Elapsed time: 0.009688
+================================================== 
+Maximum Pointwise Error = 9.111432e-07, with n = 256 
+Elapsed time: 0.041416
+================================================== 
+Maximum Pointwise Error = 1.138995e-07, with n = 512 
+Elapsed time: 0.180535
+================================================== 
+Maximum Pointwise Error = 1.418788e-08, with n = 1024 
+Elapsed time: 0.795026
+================================================== 
+Maximum Pointwise Error = 1.773486e-09, with n = 2048 
+Elapsed time: 3.499406
+================================================== 
+Maximum Pointwise Error = 2.214694e-10, with n = 4096 
+Elapsed time: 15.639252
+================================================== 
+Maximum Pointwise Error = 2.757262e-11, with n = 8192 
+Elapsed time: 66.632111
+================================================== 
+Maximum Pointwise Error = 2.951410e-12, with n = 16384 
+Elapsed time: 285.849884
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 6 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.309940e-04, with n = 32 
+Elapsed time: 0.001228
+================================================== 
+Maximum Pointwise Error = 6.662026e-05, with n = 64 
+Elapsed time: 0.001312
+================================================== 
+Maximum Pointwise Error = 8.373035e-06, with n = 128 
+Elapsed time: 0.005100
+================================================== 
+Maximum Pointwise Error = 1.046871e-06, with n = 256 
+Elapsed time: 0.021686
+================================================== 
+Maximum Pointwise Error = 1.309034e-07, with n = 512 
+Elapsed time: 0.094362
+================================================== 
+Maximum Pointwise Error = 1.636315e-08, with n = 1024 
+Elapsed time: 0.412902
+================================================== 
+Maximum Pointwise Error = 2.045432e-09, with n = 2048 
+Elapsed time: 1.814116
+================================================== 
+Maximum Pointwise Error = 2.556551e-10, with n = 4096 
+Elapsed time: 8.085097
+================================================== 
+Maximum Pointwise Error = 3.182875e-11, with n = 8192 
+Elapsed time: 34.389238
+================================================== 
+Maximum Pointwise Error = 3.407685e-12, with n = 16384 
+Elapsed time: 147.738170
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 9 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.309940e-04, with n = 32 
+Elapsed time: 0.001319
+================================================== 
+Maximum Pointwise Error = 6.621806e-05, with n = 64 
+Elapsed time: 0.000984
+================================================== 
+Maximum Pointwise Error = 8.284905e-06, with n = 128 
+Elapsed time: 0.003587
+================================================== 
+Maximum Pointwise Error = 1.035852e-06, with n = 256 
+Elapsed time: 0.015266
+================================================== 
+Maximum Pointwise Error = 1.291135e-07, with n = 512 
+Elapsed time: 0.066019
+================================================== 
+Maximum Pointwise Error = 1.613106e-08, with n = 1024 
+Elapsed time: 0.290008
+================================================== 
+Maximum Pointwise Error = 2.015855e-09, with n = 2048 
+Elapsed time: 1.270724
+================================================== 
+Maximum Pointwise Error = 2.517903e-10, with n = 4096 
+Elapsed time: 5.602855
+================================================== 
+Maximum Pointwise Error = 3.134756e-11, with n = 8192 
+Elapsed time: 23.811589
+================================================== 
+Maximum Pointwise Error = 3.356189e-12, with n = 16384 
+Elapsed time: 101.422379
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 12 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.002920
+================================================== 
+Maximum Pointwise Error = 6.662026e-05, with n = 64 
+Elapsed time: 0.000908
+================================================== 
+Maximum Pointwise Error = 8.352864e-06, with n = 128 
+Elapsed time: 0.002910
+================================================== 
+Maximum Pointwise Error = 1.046871e-06, with n = 256 
+Elapsed time: 0.011917
+================================================== 
+Maximum Pointwise Error = 1.308837e-07, with n = 512 
+Elapsed time: 0.051339
+================================================== 
+Maximum Pointwise Error = 1.636315e-08, with n = 1024 
+Elapsed time: 0.225929
+================================================== 
+Maximum Pointwise Error = 2.045413e-09, with n = 2048 
+Elapsed time: 0.987778
+================================================== 
+Maximum Pointwise Error = 2.556551e-10, with n = 4096 
+Elapsed time: 4.371378
+================================================== 
+Maximum Pointwise Error = 3.182875e-11, with n = 8192 
+Elapsed time: 18.486577
+================================================== 
+Maximum Pointwise Error = 3.407685e-12, with n = 16384 
+Elapsed time: 78.395211
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 15 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.004733
+================================================== 
+Maximum Pointwise Error = 6.694261e-05, with n = 64 
+Elapsed time: 0.000986
+================================================== 
+Maximum Pointwise Error = 8.375558e-06, with n = 128 
+Elapsed time: 0.002597
+================================================== 
+Maximum Pointwise Error = 1.042144e-06, with n = 256 
+Elapsed time: 0.009719
+================================================== 
+Maximum Pointwise Error = 1.302755e-07, with n = 512 
+Elapsed time: 0.043427
+================================================== 
+Maximum Pointwise Error = 1.628467e-08, with n = 1024 
+Elapsed time: 0.190592
+================================================== 
+Maximum Pointwise Error = 2.035585e-09, with n = 2048 
+Elapsed time: 0.823236
+================================================== 
+Maximum Pointwise Error = 2.542658e-10, with n = 4096 
+Elapsed time: 3.633839
+================================================== 
+Maximum Pointwise Error = 3.165576e-11, with n = 8192 
+Elapsed time: 15.311381
+================================================== 
+Maximum Pointwise Error = 3.389223e-12, with n = 16384 
+Elapsed time: 64.939103
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 18 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.309940e-04, with n = 32 
+Elapsed time: 0.005558
+================================================== 
+Maximum Pointwise Error = 6.686197e-05, with n = 64 
+Elapsed time: 0.000983
+================================================== 
+Maximum Pointwise Error = 8.373035e-06, with n = 128 
+Elapsed time: 0.002371
+================================================== 
+Maximum Pointwise Error = 1.046871e-06, with n = 256 
+Elapsed time: 0.008586
+================================================== 
+Maximum Pointwise Error = 1.308664e-07, with n = 512 
+Elapsed time: 0.037195
+================================================== 
+Maximum Pointwise Error = 1.636315e-08, with n = 1024 
+Elapsed time: 0.161452
+================================================== 
+Maximum Pointwise Error = 2.045413e-09, with n = 2048 
+Elapsed time: 0.718337
+================================================== 
+Maximum Pointwise Error = 2.556536e-10, with n = 4096 
+Elapsed time: 3.107458
+================================================== 
+Maximum Pointwise Error = 3.182875e-11, with n = 8192 
+Elapsed time: 13.195219
+================================================== 
+Maximum Pointwise Error = 3.407685e-12, with n = 16384 
+Elapsed time: 55.805163
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 21 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.309940e-04, with n = 32 
+Elapsed time: 0.009116
+================================================== 
+Maximum Pointwise Error = 6.686197e-05, with n = 64 
+Elapsed time: 0.001109
+================================================== 
+Maximum Pointwise Error = 8.365469e-06, with n = 128 
+Elapsed time: 0.002542
+================================================== 
+Maximum Pointwise Error = 1.045925e-06, with n = 256 
+Elapsed time: 0.007864
+================================================== 
+Maximum Pointwise Error = 1.307482e-07, with n = 512 
+Elapsed time: 0.032597
+================================================== 
+Maximum Pointwise Error = 1.632951e-08, with n = 1024 
+Elapsed time: 0.146150
+================================================== 
+Maximum Pointwise Error = 2.040987e-09, with n = 2048 
+Elapsed time: 0.638896
+================================================== 
+Maximum Pointwise Error = 2.549482e-10, with n = 4096 
+Elapsed time: 2.775781
+================================================== 
+Maximum Pointwise Error = 3.174071e-11, with n = 8192 
+Elapsed time: 11.679130
+================================================== 
+Maximum Pointwise Error = 3.398279e-12, with n = 16384 
+Elapsed time: 49.448485
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 24 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.008575
+================================================== 
+Maximum Pointwise Error = 6.686197e-05, with n = 64 
+Elapsed time: 0.001110
+================================================== 
+Maximum Pointwise Error = 8.373035e-06, with n = 128 
+Elapsed time: 0.002475
+================================================== 
+Maximum Pointwise Error = 1.045216e-06, with n = 256 
+Elapsed time: 0.007100
+================================================== 
+Maximum Pointwise Error = 1.308664e-07, with n = 512 
+Elapsed time: 0.029028
+================================================== 
+Maximum Pointwise Error = 1.636154e-08, with n = 1024 
+Elapsed time: 0.128298
+================================================== 
+Maximum Pointwise Error = 2.045396e-09, with n = 2048 
+Elapsed time: 0.590449
+================================================== 
+Maximum Pointwise Error = 2.556536e-10, with n = 4096 
+Elapsed time: 2.499694
+================================================== 
+Maximum Pointwise Error = 3.182873e-11, with n = 8192 
+Elapsed time: 10.526064
+================================================== 
+Maximum Pointwise Error = 3.407727e-12, with n = 16384 
+Elapsed time: 44.365722
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 27 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.011587
+================================================== 
+Maximum Pointwise Error = 6.694261e-05, with n = 64 
+Elapsed time: 0.001540
+================================================== 
+Maximum Pointwise Error = 8.365469e-06, with n = 128 
+Elapsed time: 0.003299
+================================================== 
+Maximum Pointwise Error = 1.046871e-06, with n = 256 
+Elapsed time: 0.006833
+================================================== 
+Maximum Pointwise Error = 1.307482e-07, with n = 512 
+Elapsed time: 0.026807
+================================================== 
+Maximum Pointwise Error = 1.634121e-08, with n = 1024 
+Elapsed time: 0.119474
+================================================== 
+Maximum Pointwise Error = 2.042487e-09, with n = 2048 
+Elapsed time: 0.543279
+================================================== 
+Maximum Pointwise Error = 2.552765e-10, with n = 4096 
+Elapsed time: 2.292430
+================================================== 
+Maximum Pointwise Error = 3.177888e-11, with n = 8192 
+Elapsed time: 9.688137
+================================================== 
+Maximum Pointwise Error = 3.402135e-12, with n = 16384 
+Elapsed time: 40.683281
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 30 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.013426
+================================================== 
+Maximum Pointwise Error = 6.694261e-05, with n = 64 
+Elapsed time: 0.001864
+================================================== 
+Maximum Pointwise Error = 8.375558e-06, with n = 128 
+Elapsed time: 0.003607
+================================================== 
+Maximum Pointwise Error = 1.047108e-06, with n = 256 
+Elapsed time: 0.006814
+================================================== 
+Maximum Pointwise Error = 1.309034e-07, with n = 512 
+Elapsed time: 0.025270
+================================================== 
+Maximum Pointwise Error = 1.636315e-08, with n = 1024 
+Elapsed time: 0.114965
+================================================== 
+Maximum Pointwise Error = 2.045396e-09, with n = 2048 
+Elapsed time: 0.504543
+================================================== 
+Maximum Pointwise Error = 2.556506e-10, with n = 4096 
+Elapsed time: 2.141738
+================================================== 
+Maximum Pointwise Error = 3.182875e-11, with n = 8192 
+Elapsed time: 8.929757
+================================================== 
+Maximum Pointwise Error = 3.407685e-12, with n = 16384 
+Elapsed time: 37.610612
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 33 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.024454
+================================================== 
+Maximum Pointwise Error = 6.686197e-05, with n = 64 
+Elapsed time: 0.002264
+================================================== 
+Maximum Pointwise Error = 8.373035e-06, with n = 128 
+Elapsed time: 0.004198
+================================================== 
+Maximum Pointwise Error = 1.047108e-06, with n = 256 
+Elapsed time: 0.007288
+================================================== 
+Maximum Pointwise Error = 1.309034e-07, with n = 512 
+Elapsed time: 0.024233
+================================================== 
+Maximum Pointwise Error = 1.634614e-08, with n = 1024 
+Elapsed time: 0.103932
+================================================== 
+Maximum Pointwise Error = 2.043269e-09, with n = 2048 
+Elapsed time: 0.476101
+================================================== 
+Maximum Pointwise Error = 2.553848e-10, with n = 4096 
+Elapsed time: 1.971858
+================================================== 
+Maximum Pointwise Error = 3.179506e-11, with n = 8192 
+Elapsed time: 8.383603
+================================================== 
+Maximum Pointwise Error = 3.404083e-12, with n = 16384 
+Elapsed time: 35.195410
+================================================== 
+Numer of threads per node = 1 
+Number of MPI proc = 36 
+================================================== 
+Running with gridpionts n=2^k, with k ∈ [5,14]
+================================================== 
+Maximum Pointwise Error = 5.335632e-04, with n = 32 
+Elapsed time: 0.028313
+================================================== 
+Maximum Pointwise Error = 6.686197e-05, with n = 64 
+Elapsed time: 0.003468
+================================================== 
+Maximum Pointwise Error = 8.373035e-06, with n = 128 
+Elapsed time: 0.004768
+================================================== 
+Maximum Pointwise Error = 1.046871e-06, with n = 256 
+Elapsed time: 0.007288
+================================================== 
+Maximum Pointwise Error = 1.308664e-07, with n = 512 
+Elapsed time: 0.023126
+================================================== 
+Maximum Pointwise Error = 1.635853e-08, with n = 1024 
+Elapsed time: 0.095735
+================================================== 
+Maximum Pointwise Error = 2.045413e-09, with n = 2048 
+Elapsed time: 0.437457
+================================================== 
+Maximum Pointwise Error = 2.556536e-10, with n = 4096 
+Elapsed time: 1.888249
+================================================== 
+Maximum Pointwise Error = 3.182855e-11, with n = 8192 
+Elapsed time: 7.883721
+================================================== 
+Maximum Pointwise Error = 3.407685e-12, with n = 16384 
+Elapsed time: 33.050990
+================================================== 
