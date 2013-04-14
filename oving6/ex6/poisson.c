@@ -36,7 +36,7 @@ main(int argc, char **argv )
 
  if( argc < 2 ) {
     printf("need a problem size\n");
-	return;
+    return 0;
   }
 
   n  = atoi(argv[1]);
@@ -92,6 +92,7 @@ main(int argc, char **argv )
     }
   }
   printf (" umax = %e \n",umax);
+  return 0;
 }
 
 void transpose (Real **bt, Real **b, int m)
