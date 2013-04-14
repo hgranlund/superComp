@@ -304,9 +304,32 @@ I tillegg har vi laget en funksjon som samler inn verdien i hvert beregningspunk
 
 Videre kan ytterligere forbedringer gjøres for å forbedre parallelliteten. Ved å bruke OpenMP\cite{MP} kan vi bruke flere tråder innen hver prosess slik at sinustransformasjonen gjennomføres ved en høyere grad av parallellitet. Her dukker det opp en utfordring med minnebruk da hver tråd krever en del av minne for å kunne utføre sinustransformasjonen. Dette vil bli diskutert i detalj senere i rapporten.
 
-\subsection{Speedup og parallellitet}
-
 \section{Resultater}
+Resultatene i denne rapporten ble til ved kjøring av programmet på Kongull clusteren\cite{kongull}. Maksimalt tok vi i bruk tre noder med tilsammen 36 fysiske prosessorkjerner fordelt på 6 prosessorer.
+
+\subsection{Speedup og parallellitet}
+Speedup $S_p$ er et mål på hvor mye raskere den parallelle koden er i forhold til den sekvensielle. 
+
+$$ S_p = \frac{T_1}{T_p}$$
+    hvor $T_1$ er tiden det tar å kjøre programmet sekvensielt, $T_p$ er tiden det tar å kjøre programmet parallellt på $p$ prosessorer. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{plot_speedup.png}
+\caption{Visualisering av speedup ved ulike p og n}
+\end{figure}
+
+
+$$ \eta_p = \frac{S_p}{p}$$
+
+\subsection{Konvergenstest}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.5]{plot_konvergens.png}
+\caption{Logaritmisk graf over maksimal punktvis feil over problemstørrelse}
+\end{figure}
+
 
 \section{Analyse}
 
@@ -333,6 +356,9 @@ OpenMP, \it{http://www.open-mpi.org/}, 12.04.2013
 
 \bibitem{gnuplot}
 Gnuplot, \it{http://www.gnuplot.info/}
+
+\bibitem{kongull}
+Kongull hardware specs, \it{http://docs.notur.no/Members/hrn/kongull.hpc.ntnu.no/kongull-hardware-1/hardware}, 13.04.2013
 \end{thebibliography}
 
 \end{document}
