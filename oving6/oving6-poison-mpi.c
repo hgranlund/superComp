@@ -7,25 +7,22 @@ Real funcf(Real x, Real y)
 
 void runPoisson(int rank, int size, int n){
   double time=MPI_Wtime();
-  Real **b, *diag, *RecvBuf,*z, h, maxError;
+  Real **b, *diag, *RecvBuf, **z, h, maxError;
   int i, j, m, nn, *len, *disp;
 
   m  = n-1;
   nn = 4*n;
   splitVector(m, size, &len, &disp);
   diag = createRealArray (m);
+  z    = createReal2DArray (omp_get_max_threads(), nn);
   b    = createReal2DArray (len[rank],m);
-  z    = createRealArray (nn);
   h    = 1./(Real)n;
 
-  #pragma omp parallel for schedule(static)
   for (i=0; i < m; i++) {
     diag[i] = 2.*(1.-cos((i+1)*M_PI/(Real)n));
   }
 
-  #pragma omp for
   for (j=0; j < len[rank]; j++) {
-  #pragma omp parallel for schedule(static)
     for (i=0; i < m; i++) {
       Real x=(Real)(j+1+disp[rank])/n;
       Real y=(Real) (i+1)/n;
@@ -35,23 +32,17 @@ void runPoisson(int rank, int size, int n){
 
   #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
-    Real* zt = createRealArray (nn);
-    fst_(b[j], &n, zt, &nn);
-    free(zt);
+    fst_(b[j], &n, z[omp_get_thread_num()], &nn);
   }
 
   transpose(b, size, len, disp, rank, m);
 
   #pragma omp parallel for schedule(static)
   for (i=0; i < len[rank]; i++) {
-    Real* zt  = createRealArray (nn);
-    fstinv_(b[i], &n, zt, &nn);
-    free(zt);
+    fstinv_(b[i], &n, z[omp_get_thread_num()], &nn);
   }
 
-  #pragma omp for
   for (j=0; j < len[rank]; j++) {
-  #pragma omp parallel for schedule(static)
     for (i=0; i < m; i++) {
       b[j][i] = b[j][i]/(diag[i]+diag[j+disp[rank]]);
     }
@@ -59,18 +50,14 @@ void runPoisson(int rank, int size, int n){
 
   #pragma omp parallel for schedule(static)
   for (i=0; i < len[rank]; i++) {
-    Real* zt  = createRealArray (nn);
-    fst_(b[i], &n, zt, &nn);
-    free(zt);
+    fst_(b[i], &n, z[omp_get_thread_num()], &nn);
   }
 
   transpose(b, size, len, disp, rank, m);
 
   #pragma omp parallel for schedule(static)
   for (j=0; j < len[rank]; j++) {
-    Real* zt  = createRealArray (nn);
-    fstinv_(b[j], &n, zt, &nn);
-    free(zt);
+    fstinv_(b[j], &n, z[omp_get_thread_num()], &nn);
   }
 
 
