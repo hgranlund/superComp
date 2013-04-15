@@ -1,7 +1,6 @@
 #include "common.h"
 
 
-
 void vectorToMatrix(Real **matrix, Real *vector, int *len, int *disp, int size, int rank ){
   int index = 0;
   for (int i = 0; i < size; ++i)
@@ -16,6 +15,7 @@ void vectorToMatrix(Real **matrix, Real *vector, int *len, int *disp, int size, 
     }
   }
 }
+
 void matrixToVector(Real **matrix, Real *vector, int *len, int *disp, int size, int rank ){
   int index = 0;
   for (int i = 0; i < size; ++i)
@@ -131,18 +131,12 @@ Real maxPointwiseError(Real** Matrix, int matrixSize, int* len, int* disp, int r
   return maxError;
 }
 
-
 void init_app(int argc, char** argv, int* rank, int* size)
 {
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, size);
   MPI_Comm_rank(MPI_COMM_WORLD, rank);
 }
-
-  // for (int i = 0; i < matrixSize * len[rank]; ++i)
-  // {
-  //   printf("%d:%e \n ", i, Matrix[i]);
-  // }
 
 
 
