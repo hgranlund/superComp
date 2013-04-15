@@ -4,10 +4,31 @@ Real funcf(Real x, Real y)
 {
   return (5*M_PI*M_PI*sin(M_PI*x)*sin(2*M_PI*y));
 }
+Real funcfSolution(Real x, Real y)
+{
+  return (sin(x*M_PI)*sin(2*y*M_PI));
+}
+
+Real maxPointwiseError(Real** Matrix, int matrixSize, int* len, int* disp, int root){
+  int rank;
+  Real maxError, localeMaxError, x, y, n;
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  localeMaxError = 0.0;
+  n=matrixSize+1;
+  for (int j=0; j < len[rank]; j++) {
+    for (int i=0; i < matrixSize; i++) {
+      x=(Real)(j+1+disp[rank])/n;
+      y=(Real) (i+1)/n;
+      if (Matrix[j][i]-funcfSolution(x, y) > localeMaxError) localeMaxError = Matrix[j][i]-funcfSolution(x, y);
+    }
+  }
+  MPI_Reduce(&localeMaxError, &maxError, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
+  return maxError;
+}
 
 void runPoisson(int rank, int size, int n){
   double time=MPI_Wtime();
-  Real **b, *diag, *RecvBuf, **z, h, maxError;
+  Real **b, *diag, *RecvBuf, **z, h, maxError, x, y;
   int i, j, m, nn, *len, *disp;
 
   m  = n-1;
@@ -24,8 +45,8 @@ void runPoisson(int rank, int size, int n){
 
   for (j=0; j < len[rank]; j++) {
     for (i=0; i < m; i++) {
-      Real x=(Real)(j+1+disp[rank])/n;
-      Real y=(Real) (i+1)/n;
+      x=(Real)(j+1+disp[rank])/n;
+      y=(Real) (i+1)/n;
       b[j][i] = h*h * funcf(x,y);
     }
   }
@@ -60,12 +81,11 @@ void runPoisson(int rank, int size, int n){
     fstinv_(b[j], &n, z[omp_get_thread_num()], &nn);
   }
 
-
   maxError = maxPointwiseError(b, m, len, disp, 0);
 
   if (rank==0)
   {
-    printf ("Maximum Pointwise Error = %e, with n = %d \n",maxError, n);
+    printf ("Maximum pointwise error = %e, with n = %d \n",maxError, n);
     printf("Elapsed time: %f\n", MPI_Wtime()-time);
     printf ("================================================== \n");
   }
@@ -76,7 +96,7 @@ int main(int argc, char **argv )
   int rank, size, n, nrange;
   init_app (argc, argv, &rank, &size);
   if (rank == 0){
-    printf("Numer of threads per node = %d \n", omp_get_max_threads());
+    printf("Number of threads per node = %d \n", omp_get_max_threads());
     printf("Number of MPI proc = %d \n", size);
     printf ("================================================== \n");
   }

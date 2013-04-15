@@ -15,7 +15,6 @@ typedef double Real;
 
 Real *createRealArray (int n);
 Real **createReal2DArray (int m, int n);
-Real maxPointwiseError(Real** Matrix, int matrixSize, int* len, int* disp, int root);
 void transpose (Real **b, int size, int *len, int *disp, int rank, int m);
 void fst_(Real *v, int *n, Real *w, int *nn);
 void fstinv_(Real *v, int *n, Real *w, int *nn);

@@ -89,6 +89,7 @@ void splitVector(int globLen, int size, int** len, int** displ)
   }
 }
 
+// Used to gather solution to one matrix on root process
 void gatherMatrix(Real** Matrix, int matrixSize, Real* gatherRecvBuf, int* len, int* disp, int root){
   int size, rank, *sendcounts, *rdispls, index;
   Real *gatherSendBuf;
@@ -112,23 +113,6 @@ void gatherMatrix(Real** Matrix, int matrixSize, Real* gatherRecvBuf, int* len, 
     index=index+sendcounts[i];
   }
   MPI_Gatherv(gatherSendBuf, matrixSize * len[rank], MPI_DOUBLE, gatherRecvBuf, sendcounts, rdispls, MPI_DOUBLE, 0,MPI_COMM_WORLD );
-}
-
-Real maxPointwiseError(Real** Matrix, int matrixSize, int* len, int* disp, int root){
-  int rank;
-  Real maxError, localeMaxError, x, y, n;
-  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  localeMaxError = 0.0;
-  n=matrixSize+1;
-  for (int j=0; j < len[rank]; j++) {
-    for (int i=0; i < matrixSize; i++) {
-      x=(Real)(j+1+disp[rank])/n;
-      y=(Real) (i+1)/n;
-      if (Matrix[j][i] > localeMaxError) localeMaxError = Matrix[j][i]-(sin(x*M_PI)*sin(2*y*M_PI));
-    }
-  }
-  MPI_Reduce(&localeMaxError, &maxError, 1, MPI_DOUBLE, MPI_MAX, root, MPI_COMM_WORLD);
-  return maxError;
 }
 
 void init_app(int argc, char** argv, int* rank, int* size)
