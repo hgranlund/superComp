@@ -10,11 +10,11 @@
 %
 % Note:
 % The \lipsum[#] commands throughout this template generate dummy text
-% to fill the template out. These commands should all be removed when 
+% to fill the template out. These commands should all be removed when
 % writing assignment content.
 %
 % This template uses a Perl script as an example snippet of code, most other
-% languages are also usable. Configure them in the "CODE INCLUSION 
+% languages are also usable. Configure them in the "CODE INCLUSION
 % CONFIGURATION" section.
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,7 +87,7 @@
         keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
         keywordstyle=[2]\color{Purple}, % Perl function arguments purple
         keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
-        identifierstyle=, % Nothing special about identifiers                                         
+        identifierstyle=, % Nothing special about identifiers
         commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
         stringstyle=\color{Purple}, % Strings are purple
         showstringspaces=false, % Don't put marks in string spaces
@@ -210,7 +210,7 @@
 
 Programmet skal kunne løse Poisson-ligningen i domenet $ x= [0..1], y = [0..1]. $ Poisson-ligningen er på formen:
 
-\begin{equation} 
+\begin{equation}
 -\Delta^2\phi = f(x,y)
 \end{equation}
 \begin{equation}
@@ -248,7 +248,7 @@ I (6) betegner $f$ hvor finkjemmet rutenett som benyttes (steglengden). Det disk
 
 Utifra stensilen kan vi sette opp en ligning for hvert punkt. Høyresiden blir $h^2f(x,y)$ hvor x og y betegner posisjonen til punktet vi ser på i domenet. Venstresiden refererer til hvert nabopunkt en gang, og til seg selv 4 ganger. Om et refererende punkt ligger på grensen til domenet ersattes dette med grensebetingelsen, f.eks 0 ved Dirichlet-betingelser.
 
-Vi kan sette ligningene sammen til et system på formen \textbf{Ax = b}. Som kan løses av en datamaskin på mange måter. Antall punkt, og dermed antall ligninger, avhenger av $h$, og vokser i graden $h^2$. Det betyr at dersom vi halverer steglengden $h$, firedobler vi antall ligninger maskinen må løse. 
+Vi kan sette ligningene sammen til et system på formen \textbf{Ax = b}. Som kan løses av en datamaskin på mange måter. Antall punkt, og dermed antall ligninger, avhenger av $h$, og vokser i graden $h^2$. Det betyr at dersom vi halverer steglengden $h$, firedobler vi antall ligninger maskinen må løse.
 
 \section{Løsning av ligningssystemet}
 
@@ -274,7 +274,7 @@ $$ U = S^{-1}((S(\widetilde{U}^T))^T) $$
 
 \subsection{Verifikasjon av resultat}
 
-Vi må verifisere at programmet vårt gjør beregningene riktig. Dette gjør vi ved å benytte en verdi for $f(x,y)$ som vi vet fører til en kjent analytisk løsning $u(x,y)$. Ved å sammenligne den eksakte løsningen $u(x,y)$ med løsningen programmet vårt gir kan vi finne den maksimale punktfeilen. Det er forventet at punktfeilen reduseres når vi øker antall beregningspunkter. 
+Vi må verifisere at programmet vårt gjør beregningene riktig. Dette gjør vi ved å benytte en verdi for $f(x,y)$ som vi vet fører til en kjent analytisk løsning $u(x,y)$. Ved å sammenligne den eksakte løsningen $u(x,y)$ med løsningen programmet vårt gir kan vi finne den maksimale punktfeilen. Det er forventet at punktfeilen reduseres når vi øker antall beregningspunkter.
 
 $$ -\Delta u = f(x,y) = 5\pi^2sin(\pi x)sin(2\pi y) $$
 
@@ -282,11 +282,11 @@ som gir den analytiske løsningen
 
 $$ u(x,y) = sin(\pi x)sin(2\pi y) $$
 
-Programmet returnerer den maksimale punktvise feilen. Om denne er tilstrekkelig liten konkluderer vi med at resultatet er korrekt. 
+Programmet returnerer den maksimale punktvise feilen. Om denne er tilstrekkelig liten konkluderer vi med at resultatet er korrekt.
 
 
 \section{Programmet}
-Programmet vi har laget er en utvidelse av det sekvensielle programmet gitt med oppgaven. Det sekvensielle programmet er skrevet av Einar M. Rønquist i år 2000. Programmeringsspråket som er blitt brukt er C, men sinustransformasjonen blir gjort av en FORTRAN-kode. Vi har parallellisert programmet ved hjelp av MPI- og OpenMP-biblioteker. 
+Programmet vi har laget er en utvidelse av det sekvensielle programmet gitt med oppgaven. Det sekvensielle programmet er skrevet av Einar M. Rønquist i år 2000. Programmeringsspråket som er blitt brukt er C, men sinustransformasjonen blir gjort av en FORTRAN-kode. Vi har parallellisert programmet ved hjelp av MPI- og OpenMP-biblioteker.
 
 \subsection{Parallellprosessering}
 
@@ -324,7 +324,7 @@ Resultatene i denne rapporten ble til ved kjøring av programmet på \texttt{kon
 
 \begin{shaded}
 \textbf{Kongull Cluster}\\
-\begin{itemize} 
+\begin{itemize}
 \item{CentOS 5.3}
 \item{93 beregningsnoder}
 \item{2 AMD Opteron 2431 Istanbul 6-kjerner 2.4 GHz per noder}
@@ -333,12 +333,12 @@ Resultatene i denne rapporten ble til ved kjøring av programmet på \texttt{kon
 \end{shaded}
 
 \subsection{Speedup og parallellitet}
-Det sekvensielle programmet vi sammenligner med er gitt med oppgaven. Hadde vi kjørt vårt program med en tråd og sammenlignet med dette hadde vi overestimert parallelliseringen av koden. Dette er fordi tiden eksekveringen tar for en parallellskrevet kode med en tråd som regel er lengre enn med en ren sekvensiell kode. 
+Det sekvensielle programmet vi sammenligner med er gitt med oppgaven. Hadde vi kjørt vårt program med en tråd og sammenlignet med dette hadde vi overestimert parallelliseringen av koden. Dette er fordi tiden eksekveringen tar for en parallellskrevet kode med en tråd som regel er lengre enn med en ren sekvensiell kode.
 
-Speedup $S_p$ er et mål på hvor mye raskere den parallelle koden er i forhold til den sekvensielle. 
+Speedup $S_p$ er et mål på hvor mye raskere den parallelle koden er i forhold til den sekvensielle.
 
 $$ S_p = \frac{T_1}{T_p}$$
-hvor $T_1$ er tiden det tar å kjøre programmet sekvensielt, $T_p$ er tiden det tar å kjøre programmet parallellt på $p$ prosessorer. 
+hvor $T_1$ er tiden det tar å kjøre programmet sekvensielt, $T_p$ er tiden det tar å kjøre programmet parallellt på $p$ prosessorer.
 
 \begin{figure}[h]
 \centering
@@ -346,7 +346,7 @@ hvor $T_1$ er tiden det tar å kjøre programmet sekvensielt, $T_p$ er tiden det
 \caption{Visualisering av speedup ved ulike p og n}
 \end{figure}
 
-Vi har også estimert den parallelle effektiviteten. Denne viser forholdet mellom speedup og antall prosessorer. 
+Vi har også estimert den parallelle effektiviteten. Denne viser forholdet mellom speedup og antall prosessorer.
 $$ \eta_p = \frac{S_p}{p}$$
 
 \begin{figure}[h]
@@ -357,7 +357,7 @@ $$ \eta_p = \frac{S_p}{p}$$
 
 \subsection{Tidsbruk}
 
-Om vi tegner tidsbruken mot problemstørrelsen $n^2$ ser vi at tiden vi bruker på å løse systemet øker linært. 
+Om vi tegner tidsbruken mot problemstørrelsen $n^2$ ser vi at tiden vi bruker på å løse systemet øker linært.
 
 \begin{figure}[h]
 \centering
@@ -368,12 +368,12 @@ Om vi tegner tidsbruken mot problemstørrelsen $n^2$ ser vi at tiden vi bruker p
 
 
 \subsection{Konvergenstest}
-Når vi øker antall beregningspunkter vil den maksimale punktfeilen, altså differansen mellom eksakt og beregnet løsning, minke. Vi har gjort en konvergenstest hvor vi tegner den maksimale punktfeilen mot problemstørrelsen og vi ser at punktfeilen minker raskt. Punktfeilen minker med en faktor fire når vi dobler steglengden. Dette er forventet. 
+Når vi øker antall beregningspunkter vil den maksimale punktfeilen, altså differansen mellom eksakt og beregnet løsning, minke. Vi har gjort en konvergenstest hvor vi tegner den maksimale punktfeilen mot problemstørrelsen og vi ser at punktfeilen minker raskt. Punktfeilen minker med en faktor fire når vi dobler steglengden. Dette er forventet.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{plot_konvergens.png}
-\caption{Graf som viser maksimal punktvis feil over problemstørrelse}
+\caption{Graf som viser maksimal punktvis feil over steglengde}
 \end{figure}
 
 
@@ -381,7 +381,7 @@ Når vi øker antall beregningspunkter vil den maksimale punktfeilen, altså dif
 
 \subsection{Hybrid mot et rent MPI-program}
 
-Gitt at $p*t=36$ hvor $p$ er antall MPI-prosesser og $t$ antall tråder per prosess ser vi at et rent MPI-program kjører raskere enn en hybrid-versjon. Dette tror vi er fordi en ren MPI-versjon vil parallellisere en større del av koden enn OpenMP. I MPI deler vi opp matrisen i striper hvor hver prosess får sin stripe. Dersom vi ofrer en MPI-prosess mot en tråd ekstra vil OpenMP tråden kun parallellisere fst-rutinen. Det virker som om nettverksforsinkelsen ved bruk av MPI ikke dominerer tidsbruken. Men dersom man har tilgang til flere tråder og ikke fler MPI-prosesser (for eksempel Intels Hyper Threading) vil hybridversjonen dra nytte av dette. 
+Gitt at $p*t=36$ hvor $p$ er antall MPI-prosesser og $t$ antall tråder per prosess ser vi at et rent MPI-program kjører raskere enn en hybrid-versjon. Dette tror vi er fordi en ren MPI-versjon vil parallellisere en større del av koden enn OpenMP. I MPI deler vi opp matrisen i striper hvor hver prosess får sin stripe. Dersom vi ofrer en MPI-prosess mot en tråd ekstra vil OpenMP tråden kun parallellisere fst-rutinen. Det virker som om nettverksforsinkelsen ved bruk av MPI ikke dominerer tidsbruken. Men dersom man har tilgang til flere tråder og ikke fler MPI-prosesser (for eksempel Intels Hyper Threading) vil hybridversjonen dra nytte av dette.
 
 \begin{figure}[h]
 \centering
@@ -402,13 +402,13 @@ Om vi skal la $f=0$ i hele domenet, men 1 i to punkt(som foreslått i oppgaven) 
 
 \subsection{Ikke-homogene Dirichlet-grensebetingelser}
 % Slik som programmet fremstår nå løser det Poisson-problem hvor vi vet at punktene på randen har verdien 0. Om dette ikke er tilfellet og vi har en ikke-homogen Diricihlet-grensebetingelse eller en annen verdi for randen må programmet modifiseres noe. Ligningssystemet som fempunktsstensilen gir er på formen $Ax=b$. Her må x- og b-vektorene utvides til å medregne randpunktene. Da vi vet verdien til grensepunktet settes denne i x-vektoren. I A-matrisen settes diagonalen til de kjente punktene lik 1 og resten av raden lik null. På denne måten tar nå programmet hensyn til ikke-homogene Dirichlet-grensebetingelser eller andre verdier på randen. Dette er ikke blitt implementert.
-Slik som programmet fremstår nå løser det Poisson-problem hvor vi vet at punktene på randen har verdien 0. Om dette ikke er tilfellet og vi har en ikke-homogen Diricihlet-grensebetingelse eller en annen verdi for randen må programmet modifiseres noe. For å inkludere randpunktene i ligningssytemet innfører vi ny vektor på høyresiden av ligningen $Ax=b$ slik at vi får et system $Ax=b+c$. $c$ inneholder verdien til randpunktene og null der randpunktene ikke inngår i fempunktsstensilen. 
+Slik som programmet fremstår nå løser det Poisson-problem hvor vi vet at punktene på randen har verdien 0. Om dette ikke er tilfellet og vi har en ikke-homogen Diricihlet-grensebetingelse eller en annen verdi for randen må programmet modifiseres noe. For å inkludere randpunktene i ligningssytemet innfører vi ny vektor på høyresiden av ligningen $Ax=b$ slik at vi får et system $Ax=b+c$. $c$ inneholder verdien til randpunktene og null der randpunktene ikke inngår i fempunktsstensilen.
 
 \subsection{Rektangulært domene}
 Dersom vi skal løse Poisson-problemet på et rektangulært domene blir utgangspunktet forandret. Vi antar lik steglengde $h$ i begge retninger. Gitt domenet $\Omega = (0,L_x)*(0,L_y)$ får vi verdier for beregningspunktene slik
 
 $$ x_i = ih, \quad i=0,1,...,n, \quad n = \frac{L_x}{h}  $$
-$$ y_j = jh, \quad j=0,1,...,m, \quad m = \frac{L_y}{h} $$ 
+$$ y_j = jh, \quad j=0,1,...,m, \quad m = \frac{L_y}{h} $$
 
 $$
 -u(i+h,j)-u(i,j+h)-u(i-h,j)-u(i,j-h)+4u(i,j) = h^2f(i,j) $$
