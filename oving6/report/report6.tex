@@ -286,6 +286,7 @@ Programmet returnerer den maksimale punktvise feilen. Om denne er tilstrekkelig 
 
 
 \section{Programmet}
+Programmet vi har laget er en utvidelse av det sekvensielle programmet gitt med oppgaven. Det sekvensielle programmet er skrevet av Einar M. Rønquist i år 2000. Programmeringsspråket som er blitt brukt er C, men sinustransformasjonen blir gjort av en FORTRAN-kode. Vi har parallellisert programmet ved hjelp av MPI- og OpenMP-biblioteker. 
 
 \subsection{Parallellprosessering}
 
@@ -309,19 +310,21 @@ I tillegg har vi laget en funksjon som samler inn verdien i hvert beregningspunk
 \end{figure}
 
 \subsubsection{OpenMP}
-Videre kan ytterligere forbedringer gjøres for å forbedre parallelliteten. Ved å bruke OpenMP\cite{MP} kan vi bruke flere tråder innen hver prosess slik at sinustransformasjonen gjennomføres ved en høyere grad av parallellitet. Her dukker det opp en utfordring med minnebruk da hver tråd krever en del av minne for å kunne utføre sinustransformasjonen. FORTRAN-koden krever en arbeidsbuffer. For å kunne benytte OpenMP må hver tråd ha sin egen uavhenige buffer. Om vi hadde brukt samme buffer kunne tråder ha lest og skrevet til samme sted i minne. Dette unngår vi ved å samle arbeidsbufferene i en matrise som kolonner. Antall kolonner er lik antall tilgjenglige tråder satt av en miljøvariabelen. I parallell-seksjonen av for-løkka brukes metoden get\_thread\_num() for å gi tråden sitt uavhengige buffer. På denne måten blir fst-rutinen parallellisert ytterligere. Denne rutinen krever mange flyttallsoperasjoner, og det er derfor lurt å bruke OpenMP her. Dog bruker vi mer minne ved å parallellisere fst-rutinen på denne måten.
+Videre kan ytterligere forbedringer gjøres for å forbedre parallelliteten. Ved å bruke OpenMP\cite{MP} kan vi bruke flere tråder innen hver prosess slik at sinustransformasjonen gjennomføres ved en høyere grad av parallellitet. Her dukker det opp en utfordring med minnebruk da hver tråd krever en del av minne for å kunne utføre sinustransformasjonen. FORTRAN-koden krever et arbeidsbuffer. For å kunne benytte OpenMP må hver tråd ha sitt eget uavhengige buffer. Om vi hadde brukt samme buffer kunne tråder ha lest og skrevet til samme sted i minne. Dette unngår vi ved å samle arbeidsbufferene i en matrise som kolonner. Antall kolonner er lik antall tilgjenglige tråder satt av en miljøvariabelen. I parallell-seksjonen av for-løkka brukes metoden get\_thread\_num() for å gi tråden sitt uavhengige buffer. På denne måten blir fst-rutinen parallellisert ytterligere. Denne rutinen krever mange flyttallsoperasjoner, og det er derfor lurt å bruke OpenMP her. Dog bruker vi mer minne ved å parallellisere fst-rutinen på denne måten.
 
-Vi har valgt å ikke bruke OpenMP på de resterende for-loopene i koden selvom de er uavhengige og sådan kan parallelliseres. Dette er fordi de inneholder få flyttallsoperasjoner og overhead med join/forks gjort forbedringene nært neglisjerbart. 
+Vi har valgt å ikke bruke OpenMP på de resterende for-loopene i koden selvom de er uavhengige og sådan kan parallelliseres. Dette er fordi de inneholder få flyttallsoperasjoner og overhead med join/forks gjort forbedringene nært neglisjerbart.
 
-\section{Kompilering}
+\subsection{Kompilering}
 Programmet ble kompilert C og FORTRAN-kompilator fra Intel. Vi brukte Intel versjon 11.1.059 og OpenMPI-bibliotek (versjon 1.4.3). CMAKE ble brukt til å lage et byggesystem for programmet. Da vi kjørte cmake brukte vi flagget -DCMAKE\_BUILD\_TYPE=Release for å skru på optimaliseringer i kompilatoren. Git\cite{git} ble brukt for å vedlikeholde kode på serveren og lokalt.
+
+Vi har valgt å lage et rent parallellt program som krever at kompilatoren linker opp mot MPI- og OpenMP-biblioteker. Dette gjør koden lettere lesbar, men kan da ikke kjøres uten disse bibliotekene.
 
 \section{Resultater}
 Resultatene i denne rapporten ble til ved kjøring av programmet på \texttt{kongull} clusteren\cite{kongull}. Maksimalt tok vi i bruk tre noder med tilsammen 36 fysiske prosessorkjerner fordelt på 6 prosessorer og 2GB minne per node.
 
 \begin{shaded}
 \textbf{Kongull Cluster}\\
-\begin{itemize}
+\begin{itemize} 
 \item{CentOS 5.3}
 \item{93 beregningsnoder}
 \item{2 AMD Opteron 2431 Istanbul 6-kjerner 2.4 GHz per noder}
@@ -371,7 +374,7 @@ Når vi øker antall beregningspunkter vil den maksimale punktfeilen, altså dif
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{plot_konvergens.png}
-\caption{Logaritmisk graf som viser maksimal punktvis feil over problemstørrelse}
+\caption{Graf som viser maksimal punktvis feil over problemstørrelse}
 \end{figure}
 
 
@@ -391,7 +394,7 @@ Gitt at $p*t=36$ hvor $p$ er antall MPI-prosesser og $t$ antall tråder per pros
 
 Vi ser at tiden det tar å løse problemet for et fast antall prosessorer øker linært med $n^2$. Dette er forventet. Øker vi $n$ med to firedobler vi problemstørrelsen og arbeidet for å løse problemet. Problemstørrelsen ($n^2$) og tiden det tar følger hverandre linært.
 
-Vi ser at vi får en økning av speedup $S_p$ til vi når et metningspunkt og speedupen avtar. Dette er fordi problemstørrelsen i forhold til antall prosessorer er så liten at det ikke er fordelaktig å dele opp problemet ytterligere. Vi ser denne tendensen godt ved mindre problemstørrelser, men ved bruk av 36 prosessorer når vi ikke denne metningen ved problemstørrelser over $n=128$. Det er dog noen merkelige resultater å se. For eksempel oppnår vi en veldig dårlig speedup ved $n=1024$, men veldig god speedup på $n=512$. Dette klarer vi ikke helt å forklare. Det kan være at disse merklighetene er spesielle for denne kjøringen, og at vi hadde fått bedre resultater ved et større statistisk grunnlag.
+Vi ser at vi får en økning av speedup $S_p$ til vi når et metningspunkt og speedupen avtar. Dette er fordi problemstørrelsen i forhold til antall prosessorer er så liten at det ikke er fordelaktig å dele opp problemet ytterligere. Kommunikasjonstiden øker når vi bruker flere prosessorer, selvom arbeid per prosessor går ned. Vi ser denne tendensen godt ved mindre problemstørrelser, men ved bruk av 36 prosessorer når vi ikke denne metningen ved problemstørrelser over $n=128$. Det er dog noen merkelige resultater å se. For eksempel oppnår vi en veldig dårlig speedup ved $n=1024$, men veldig god speedup på $n=512$. Dette klarer vi ikke helt å forklare. Det kan være at disse merklighetene er spesielle for denne kjøringen, og at vi hadde fått bedre resultater ved et større statistisk grunnlag.
 
 \subsection{Endring av programmet for andre verdier for f}
 Slik som vi har skrevet programmet er det enkelt å endre det til å løse et annet Poisson-problem. Funksjonen funcf returnerer verdien av f gitt en verdi for x og y. Skal vi bruke en annen funksjon er det kun en linje i denne funksjonen som må skrives om, og eventuelle konvergenstester.
